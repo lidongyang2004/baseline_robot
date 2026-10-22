@@ -19,3 +19,5 @@
     fluid_density: 1023.0
     gravity: 9.81
     attitude_wait: 0.1
+    # Must match dvl_sf noise altitude in baseline_robot.scn.
+    dvl_altitude_stddev: 0.03

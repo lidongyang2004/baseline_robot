@@ -1,0 +1,15 @@
+Saved assets/navigation-results.png; 140 acoustic fixes in the mission window
+{
+  "acoustic_fixes_in_window": 140,
+  "uncertainty_ellipses": 18,
+  "mission_start_stamp": 1792670186.515227,
+  "mission_end_stamp": 1792670326.8094375,
+  "error_samples": 649,
+  "interval_samples": 624,
+  "artifacts": [
+    "navigation-results",
+    "usbl-trajectory-3d",
+    "position-uncertainty",
+    "sensor-noise-models"
+  ]
+}

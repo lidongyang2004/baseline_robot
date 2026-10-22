@@ -13,8 +13,9 @@
     range_stddev: 0.05
     horizontal_angle_stddev_deg: 0.2
     vertical_angle_stddev_deg: 0.5
-    range_resolution: 0.1
-    angle_resolution_deg: 0.1
+    range_resolution: 0.0
+    angle_resolution_deg: 0.0
+    # Additional model/timestamp budget, separate from the simulated noise.
     position_variance_floor: 0.01
     max_age: 2.0
     future_tolerance: 0.1

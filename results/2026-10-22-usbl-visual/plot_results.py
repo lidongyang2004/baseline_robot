@@ -93,7 +93,7 @@ fig.suptitle("2026-10-22 双程 USBL 融合实测｜声学噪声非零｜GPS 仅
              f"水平 RMSE {metrics['horizontal_rmse_m']:.3f} m · "
              f"末端三维误差 {metrics['final_error_3d_m']:.3f} m · "
              f"声学观测 {len(acoustic)} 点", fontsize=14)
-fig.savefig(root / "assets/navigation-results.png", dpi=170)
+fig.savefig(output / "navigation-results.png", dpi=170)
 fig.savefig(output / "navigation-results.svg")
 
 fig3 = plt.figure(figsize=(11.5, 8), layout="constrained", facecolor="white")
@@ -117,6 +117,6 @@ space.set_box_aspect((1, 1.16, .45))
 space.view_init(elev=26, azim=-55)
 space.legend(loc="upper left", fontsize=9)
 space.set_title("单 AUV 双程 USBL 三维航迹｜声学观测与融合输出来自同一次运行", pad=20, fontsize=13)
-fig3.savefig(root / "assets/usbl-trajectory-3d.png", dpi=170)
+fig3.savefig(output / "usbl-trajectory-3d.png", dpi=170)
 fig3.savefig(output / "usbl-trajectory-3d.svg")
 print(f"Saved assets/navigation-results.png; {len(acoustic)} acoustic fixes in the mission window")

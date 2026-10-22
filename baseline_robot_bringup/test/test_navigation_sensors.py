@@ -3,6 +3,7 @@
 import importlib.util
 import csv
 import math
+import sys
 from pathlib import Path
 from unittest.mock import Mock, patch
 import xml.etree.ElementTree as ET
@@ -17,6 +18,7 @@ from stonefish_ros2.msg import DVL
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "baseline_robot_bringup/scripts"))
 
 
 def load_script(name):
@@ -46,6 +48,7 @@ def node():
     instance.depth_pub = Mock()
     instance.dvl_pub = Mock()
     instance.alt_pub = Mock()
+    instance.alt_cov_pub = Mock()
     for frame, translation in (("imu_sf", (-0.7, 0.0, 0.05)),
                                ("pressure", (-1.0, 0.0, 0.0))):
         tf = TransformStamped()
@@ -64,6 +67,7 @@ def imu(stamp, pitch):
     msg.header.stamp.sec, msg.header.stamp.nanosec = divmod(stamp, 1_000_000_000)
     msg.orientation.y = math.sin(pitch / 2)
     msg.orientation.w = math.cos(pitch / 2)
+    msg.orientation_covariance = [0.000025, 0.0, 0.0, 0.0, 0.000025, 0.0, 0.0, 0.0, 0.0001]
     return msg
 
 
@@ -113,6 +117,11 @@ def test_dvl_preserves_full_covariance_stamp_and_reference_point(node):
             expected = msg.velocity_covariance[3*i+j] if i < 3 and j < 3 else 0
             assert out.twist.covariance[6*i+j] == expected
     assert node.alt_pub.publish.call_args.args[0].point.z == -30
+    altitude = node.alt_cov_pub.publish.call_args.args[0]
+    assert altitude.header == msg.header
+    assert altitude.pose.pose.position.z == -30
+    assert altitude.pose.covariance[14] == pytest.approx(0.03**2)
+    assert [altitude.pose.covariance[i] for i in (0, 7, 21, 28, 35)] == [1e6]*5
     msg.altitude = -1.0
     node.on_dvl(msg)
     assert node.dvl_pub.publish.call_count == 1
@@ -147,7 +156,7 @@ def test_pressure_is_compensated_at_measurement_time(node, pitch):
     assert out.pose.pose.position.z == pytest.approx(-30000 / node.rho_g - math.sin(pitch))
     assert adapter.quaternion_tuple(out.pose.pose.orientation) == pytest.approx(
         (0, math.sin(pitch/2), 0, math.cos(pitch/2)))
-    assert out.pose.covariance[14] == pytest.approx(4 / node.rho_g**2)
+    assert out.pose.covariance[14] == pytest.approx(4 / node.rho_g**2 + 0.000025*math.cos(pitch)**2)
     assert not node.pending
 
 
@@ -231,6 +240,8 @@ def test_acoustic_path_is_recorded_without_changing_estimate_truth_evaluation(tm
             msg.pose.pose.orientation.w = 1.0
             msg.header.stamp.sec = seconds
             msg.pose.pose.position.x = float(seconds)
+            msg.pose.covariance[0], msg.pose.covariance[1], msg.pose.covariance[7] = 0.04, 0.01, 0.09
+            msg.pose.covariance[14] = 0.0004
             node.record("usbl", msg)
         path = node.path_publishers["usbl"].publish.call_args.args[0]
         assert [p.pose.position.x for p in path.poses] == [1.0, 2.0]
@@ -243,10 +254,22 @@ def test_acoustic_path_is_recorded_without_changing_estimate_truth_evaluation(tm
             rows = list(csv.DictReader(stream))
         assert [row["source"] for row in rows] == ["usbl", "usbl", "filtered", "truth"]
         assert [row["x"] for row in rows[:2]] == ["1.0", "2.0"]
+        assert float(rows[0]["cov_xy"]) == 0.01
+        assert float(rows[0]["cov_zz"]) == 0.0004
         streams, skipped = evaluation.read_trajectory(filename)
         assert skipped == 0 and set(streams) == {"filtered", "truth"}
     finally:
         node.destroy_node()
+
+
+@pytest.mark.parametrize("p,var", [(0.0, 40000.0), (-1.0, 40000.0),
+                                   (30000.0, 0.0), (30000.0, float("nan"))])
+def test_pressure_rejects_clipped_or_unknown_variance(node, p, var):
+    msg = pressure(1_000_000_000, p)
+    msg.variance = var
+    node.on_pressure(msg)
+    assert not node.pending
+    node.depth_pub.publish.assert_not_called()
 
 
 def test_gps_local_truth_is_not_throttled_or_fed_from_estimate():

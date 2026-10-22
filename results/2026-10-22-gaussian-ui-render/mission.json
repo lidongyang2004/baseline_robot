@@ -1,0 +1,23 @@
+{
+  "final_state": "start",
+  "mission_start_stamp": 1792671053.7629087,
+  "mission_duration_sec": 128.09466511699975,
+  "post_mission_observation_sec": 12,
+  "mission_elapsed": 140.12835782000002,
+  "samples": {
+    "filtered": 3007,
+    "imu": 3006,
+    "truth": 2998,
+    "fix": 146,
+    "dvl": 748,
+    "depth": 747
+  },
+  "rates_hz": {
+    "filtered": 19.99970123733067,
+    "imu": 20.000165283096308,
+    "truth": 20.042562196893975,
+    "fix": 0.9737945364082988,
+    "dvl": 5.000025884036267,
+    "depth": 5.000111129279547
+  }
+}

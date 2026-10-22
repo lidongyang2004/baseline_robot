@@ -11,11 +11,13 @@ from datetime import datetime
 from pathlib import Path as FilePath
 
 import rclpy
+from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry, Path
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import NavSatFix
+from sensor_uncertainty import SensorRecorder
 
 
 class NavigationPath(Node):
@@ -53,7 +55,15 @@ class NavigationPath(Node):
             "source", "stamp_sec", "stamp_nanosec", "frame_id", "child_frame_id",
             "x", "y", "z", "qx", "qy", "qz", "qw",
             "latitude", "longitude", "altitude",
+            "cov_xx", "cov_xy", "cov_xz", "cov_yy", "cov_yz", "cov_zz",
         ])
+        try:
+            self.sensor_recorder = SensorRecorder(
+                self, filename.with_name(filename.stem + "-sensors.jsonl"),
+                FilePath(get_package_share_directory("baseline_robot_bringup")))
+        except Exception:
+            self.csv_file.close()
+            raise
         self.subscriptions_ = [
             self.create_subscription(
                 Odometry, "odometry/filtered",
@@ -95,6 +105,7 @@ class NavigationPath(Node):
             source, msg.header.stamp.sec, msg.header.stamp.nanosec,
             msg.header.frame_id, msg.child_frame_id,
             p.x, p.y, p.z, q.x, q.y, q.z, q.w, "", "", "",
+            *(msg.pose.covariance[i] for i in (0, 1, 2, 7, 8, 14)),
         ])
         self.csv_file.flush()
 
@@ -113,11 +124,12 @@ class NavigationPath(Node):
         self.writer.writerow([
             "gps_truth_fix", msg.header.stamp.sec, msg.header.stamp.nanosec,
             msg.header.frame_id, "", *[""] * 7,
-            msg.latitude, msg.longitude, msg.altitude,
+            msg.latitude, msg.longitude, msg.altitude, *[""]*6,
         ])
         self.csv_file.flush()
 
     def destroy_node(self):
+        self.sensor_recorder.close()
         self.csv_file.close()
         return super().destroy_node()
 

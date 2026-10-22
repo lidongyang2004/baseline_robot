@@ -27,7 +27,8 @@
     <connect device_id="2" occlusion_test="false"/>
     <autoping rate="1.0"/>
     <noise range="0.05" horizontal_angle="0.2" vertical_angle="0.5"/>
-    <resolution range="0.1" angle="0.1"/>
+    <!-- Disable truncation quantization for the Gaussian-noise experiment. -->
+    <resolution range="0.0" angle="0.0"/>
     <world_transform xyz="-10.0 -5.0 1.0" rpy="0.0 0.0 0.0"/>
     <ros_publisher topic="baseline_robot/stonefish/usbl"/>
   </comm>
