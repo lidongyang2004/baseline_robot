@@ -1,0 +1,21 @@
+# Stonefish driver frames and thruster/sensor topic wiring.
+/baseline_robot/imu_driver_node:
+  ros__parameters:
+    roll_offset: 3.141592653589793
+    pitch_offset: 0.0
+    yaw_offset: 1.5707963267948966
+    roll_reverse: 1.0
+    pitch_reverse: -1.0
+    yaw_reverse: -1.0
+/baseline_robot/thruster_driver_node:
+  ros__parameters:
+    thruster_pub_topic: /baseline_robot/stonefish/thruster_command
+    thruster_length: 4
+    thruster_sub_topics: [/baseline_robot/control/thruster/surge, /baseline_robot/control/thruster/sway_bow,
+      /baseline_robot/control/thruster/heave_stern, /baseline_robot/control/thruster/heave_bow]
+/baseline_robot/sensor_adapter:
+  ros__parameters:
+    base_frame: baseline_robot/base_link
+    fluid_density: 1023.0
+    gravity: 9.81
+    attitude_wait: 0.1

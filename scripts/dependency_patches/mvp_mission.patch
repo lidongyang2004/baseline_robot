@@ -1,0 +1,12 @@
+diff --git a/mvp_helm/CMakeLists.txt b/mvp_helm/CMakeLists.txt
+index d272002..f9579c4 100644
+--- a/mvp_helm/CMakeLists.txt
++++ b/mvp_helm/CMakeLists.txt
+@@ -64,6 +64,7 @@ set(dependencies
+ ####################################################################
+ 
+ include_directories(
++  ${GeographicLib_INCLUDE_DIRS}
+   include
+ )
+ 

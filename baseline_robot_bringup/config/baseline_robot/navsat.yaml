@@ -1,0 +1,12 @@
+# Optional legacy NavSat configuration; not loaded by the simulation launch.
+/**/navsat_transform_node:
+  ros__parameters:
+    frequency: 30.0
+    delay: 1.0
+    magnetic_declination_radians: -0.24
+    yaw_offset: 0.0
+    zero_altitude: false
+    publish_filtered_gps: true
+    use_odometry_yaw: true
+    wait_for_datum: true
+    datum: [41.0, -71.0, 0.0]

@@ -1,0 +1,41 @@
+repositories:
+  src/acomms_msgs:
+    type: git
+    url: https://github.com/GSO-soslab/acomms_msgs.git
+    version: 06240feb09c2413c8316fb969e7bbe4bd836d799
+  src/mvp_control:
+    type: git
+    url: https://github.com/uri-ocean-robotics/mvp_control.git
+    version: 6cfea2d5c1e371bd371aa6587066d27c617c55ad
+  src/mvp_mission:
+    type: git
+    url: https://github.com/uri-ocean-robotics/mvp_mission.git
+    version: 84cce537aa08267eb65bcf2b9ea65a27d81bd6f0
+  src/mvp_msgs:
+    type: git
+    url: https://github.com/uri-ocean-robotics/mvp_msgs.git
+    version: 7aa616fab3bdd26dcd4ad178c4bfcd48c4231480
+  src/mvp_utilities:
+    type: git
+    url: https://github.com/uri-ocean-robotics/mvp_utilities.git
+    version: 0c475d3ffe9ea8407caf640e70f9f7d8b86c3331
+  src/stonefish_ros2:
+    type: git
+    url: https://github.com/patrykcieslak/stonefish_ros2.git
+    version: 6646e7ac25eed982f37f807abc7b545dbd2d6648
+  src/world_of_stonefish:
+    type: git
+    url: https://github.com/GSO-soslab/world_of_stonefish.git
+    version: 55139d46dcc6326784d998785950ddea0b095b27
+  vendor/osqp-cpp:
+    type: git
+    url: https://github.com/GSO-soslab/osqp-cpp
+    version: 5945edda3016be2f8eb412ff1875a3501dbc27de
+  vendor/osqp:
+    type: git
+    url: https://github.com/GSO-soslab/osqp
+    version: 0dd00a578cf1c2691c5c379965d504c75bf6cfad
+  vendor/abseil-cpp:
+    type: git
+    url: https://github.com/abseil/abseil-cpp.git
+    version: 4447c7562e3bc702ade25105912dce503f0c4010

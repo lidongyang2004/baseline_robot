@@ -1,0 +1,25 @@
+diff --git a/mvp_localization_utilities/CMakeLists.txt b/mvp_localization_utilities/CMakeLists.txt
+index f26919d..a224a75 100644
+--- a/mvp_localization_utilities/CMakeLists.txt
++++ b/mvp_localization_utilities/CMakeLists.txt
+@@ -47,6 +47,7 @@ set(dependencies
+ )
+ 
+ include_directories(include
++  ${GeographicLib_INCLUDE_DIRS}
+   # ${EIGEN3_INCLUDE_DIR}
+ )
+ set(library_name ${PROJECT_NAME})
+diff --git a/mvp_roslaunch_manager/roslaunch_manager/package.xml b/mvp_roslaunch_manager/roslaunch_manager/package.xml
+index 54de3c7..25bec26 100644
+--- a/mvp_roslaunch_manager/roslaunch_manager/package.xml
++++ b/mvp_roslaunch_manager/roslaunch_manager/package.xml
+@@ -11,7 +11,7 @@
+   <depend>std_msgs</depend>
+   <depend>sensor_msgs</depend>
+ 
+-  <depend>roslaunch_manager_msgs</depend>
++  <depend>roslaunch_manager_interfaces</depend>
+ 
+   <depend>rcl_interfaces</depend> <!-- For parameter services -->
+   <depend>launch_ros</depend> <!-- For launch file utilities -->

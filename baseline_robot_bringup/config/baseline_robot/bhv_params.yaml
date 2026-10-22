@@ -1,0 +1,53 @@
+# Mission coordinates are NED: x north, y east, z down (metres).
+# Linear speeds are m/s; teleoperation angle increments are degrees.
+# waypoint_u gives the speed of each path segment.
+bhv_teleop:
+  default_bhv_world_link: world_ned
+  default_bhv_child_link: cg_link
+  tele_s_surge: 2.0
+  tele_s_sway: 1.0
+  tele_d_yaw: 10.0
+  tele_d_pitch: 10.0
+  tele_d_depth: 0.5
+  no_joy_timeout: 500.0
+bhv_direct_control:
+  default_bhv_world_link: world_ned
+  default_bhv_child_link: cg_link
+  desired_x: 0.0
+  desired_y: 0.0
+  desired_z: 0.5
+  desired_roll: 0.1
+  desired_pitch: 0.0
+  desired_yaw: 0.0
+  desired_u: 0.0
+  desired_v: 0.0
+  desired_w: 0.0
+  desired_p: 0.0
+  desired_q: 0.0
+  desired_r: 0.0
+bhv_path_following:
+  default_bhv_world_link: world_ned
+  default_bhv_child_link: cg_link
+  state_done: start
+  state_fail: start
+  acceptance_radius: 3.0
+  lookahead_distance: 5.0
+  overshoot_timeout: 30.0
+  surge_velocity: 0.8
+  sigma: 0.01
+  beta_gain: 2.5
+  pitch_gain: 0.0
+  pitch_assist_band: 0.5
+  max_pitch: 0.35
+  lookahead_adaptive_flag: true
+  lookahead_max: 15.0
+  lookahead_min: 3.0
+  lookahead_gamma: 0.5
+  turning_surge_velocity: 0.1
+  turning_angle_sector: 0.7
+  waypoint_x: [20.0, 20.0, 0.0, 0.0]
+  waypoint_y: [0.0, 20.0, 20.0, 0.0]
+  waypoint_z: [3.0, 3.0, 3.0, 3.0]
+  waypoint_u: [0.8, 0.8, 0.8, 0.8]
+  waypoint_file_package: baseline_robot_bringup
+  waypoint_path: config/baseline_robot/go_to_list/

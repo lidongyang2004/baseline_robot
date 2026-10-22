@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scenario>
+  <environment>
+    <ned latitude="41" longitude="-71"/>
+    <ocean>
+      <water density="1023.0" jerlov="0.2"/>
+      <particles enabled="true"/>
+      <current type="uniform">
+        <velocity xyz="0.0 0.0 0.0"/>
+      </current>
+    </ocean>
+    <atmosphere>
+      <sun azimuth="40.0" elevation="10.0"/>
+    </atmosphere>
+  </environment>
+  <include file="$(find world_of_stonefish)/metadata/materials.scn"/>
+  <include file="$(find world_of_stonefish)/metadata/looks.scn"/>
+  <include file="$(find baseline_robot_bringup)/scenarios/baseline_robot.scn">
+    <arg name="robot_name" value="baseline_robot"/>
+    <arg name="position_x" value="0.0"/>
+    <arg name="position_y" value="0.0"/>
+    <arg name="position_z" value="-0.5"/>
+  </include>
+  <!-- A bottom within DVL range provides a bottom-track target. NED z is down. -->
+  <static name="seabed" type="box">
+    <dimensions xyz="400.0 400.0 1.0"/>
+    <material name="Rock"/>
+    <look name="gray"/>
+    <world_transform xyz="0.0 0.0 30.5" rpy="0.0 0.0 0.0"/>
+  </static>
+</scenario>

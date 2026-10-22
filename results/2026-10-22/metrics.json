@@ -1,0 +1,20 @@
+{
+  "samples": 638,
+  "first_stamp": 1792649969.0460823,
+  "last_stamp": 1792650107.8946283,
+  "duration_sec": 138.848546014,
+  "horizontal_rmse_m": 0.008412383093339729,
+  "rmse_3d_m": 0.008417878953473618,
+  "max_horizontal_error_m": 0.014681154175930312,
+  "max_error_3d_m": 0.01468166530924459,
+  "final_horizontal_error_m": 0.006766883307733201,
+  "final_error_3d_m": 0.0067770153907592305,
+  "final_error_xyz_m": [
+    -0.005037073025006,
+    0.004518695059553712,
+    0.00037044285134046895
+  ],
+  "csv_path": "/home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-22/trajectory.csv",
+  "skipped_incomplete_rows": 0,
+  "passed": true
+}

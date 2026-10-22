@@ -1,0 +1,30 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5aabade..a1c04dd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -46,6 +46,7 @@ include_directories(
+   include
+   ${EIGEN3_INCLUDE_DIR}
+   ${Boost_INCLUDE_DIRS}
++  ${GSL_INCLUDE_DIRS}
+ )
+ 
+ set(library_name ${PROJECT_NAME})
+@@ -80,7 +81,7 @@ add_library(${library_name} SHARED
+ 
+ target_link_libraries( 
+   ${library_name}
+-  gsl
++  GSL::gsl
+   osqp-cpp
+   ${Boost_LIBRARIES}
+   yaml-cpp
+@@ -95,7 +96,7 @@ ament_target_dependencies(
+ add_executable(mvp_control_ros_node src/mvp_control_ros_node.cpp)
+ target_link_libraries(mvp_control_ros_node 
+   ${library_name}
+-  gsl
++  GSL::gsl
+   osqp-cpp
+   ${Boost_LIBRARIES}
+   yaml-cpp

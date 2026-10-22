@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>baseline_robot_bringup</name>
+  <version>0.0.0</version>
+  <description>Single-AUV simulation, sensor fusion and mission launch files.</description>
+  <maintainer email="mingxi@todo.todo">mingxi</maintainer>
+  <license>TODO: License declaration</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geographic_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>stonefish_ros2</exec_depend>
+  <exec_depend>world_of_stonefish</exec_depend>
+  <exec_depend>mvp_control</exec_depend>
+  <exec_depend>mvp_helm</exec_depend>
+  <exec_depend>mvp_localization_utilities</exec_depend>
+  <exec_depend>baseline_robot_config</exec_depend>
+  <exec_depend>baseline_robot_description</exec_depend>
+  <depend>rviz2</depend>
+  <depend>tf2_ros</depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
