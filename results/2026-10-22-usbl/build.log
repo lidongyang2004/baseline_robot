@@ -1,0 +1,5 @@
+[0.155s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/root/opt/ros/jazzy' in the environment variable AMENT_PREFIX_PATH doesn't contain any 'local_setup.*' files.
+Starting >>> baseline_robot_bringup
+Finished <<< baseline_robot_bringup [1.43s]
+
+Summary: 1 package finished [1.55s]

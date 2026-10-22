@@ -1,0 +1,11 @@
+Actual robot_localization EKF integration test: passed
+Source: baseline_robot_bringup/test/test_usbl_ekf.py
+Two filters receive the same IMU/DVL/depth and initial x/y offset (2, -1) m.
+The enabled filter additionally receives fixes delayed by 80 ms.
+Passed assertions after 3 seconds of acoustic fixes:
+  enabled: |x| < 0.15 m and |y| < 0.15 m
+  disabled: x = 2 m and y = -1 m, within 0.05 m
+  enabled depth stays -3 m, within 0.02 m (acoustic z is not fused)
+After a 1.5-second acoustic outage, >15 further filtered messages arrive.
+Both EKF processes remain alive; SIGINT cleanup succeeds.
+Test report: test.log and test-result.log in this directory.

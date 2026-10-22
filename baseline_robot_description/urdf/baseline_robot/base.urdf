@@ -62,6 +62,12 @@
     <parent link="base_link"/>
     <child link="ping360_link"/>
   </joint>
+  <link name="acoustic_transponder"/>
+  <joint name="acoustic_transponder_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="acoustic_transponder"/>
+  </joint>
   <!-- thrusters -->
   <link name="surge_thruster_link"/>
   <joint name="surge_thruster_joint" type="fixed">

@@ -1,0 +1,27 @@
+{
+  "rates_hz": {
+    "raw": 1.0113429936100262,
+    "usbl": 1.011343395974104,
+    "filtered": 19.999011887512797
+  },
+  "samples": {
+    "raw": 19,
+    "usbl": 19,
+    "filtered": 368
+  },
+  "raw_beacon_id": 2,
+  "raw_frame": "baseline_robot/usbl_station",
+  "raw_range_m": 20.700000762939453,
+  "position_covariance": [
+    0.013963056241435047,
+    -0.0007661958908603184,
+    0.0020378997850279495,
+    -0.0007661958908603188,
+    0.014854929732761365,
+    0.0011718442336042434,
+    0.0020378997850279495,
+    0.0011718442336042434,
+    0.042551012455748265
+  ],
+  "timestamp_note": "Adapter subtracts range/1531 seconds from receive timestamp (approximation)"
+}

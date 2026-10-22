@@ -38,7 +38,7 @@ def generate_launch_description():
             namespace=vehicle, name="sensor_adapter",
             parameters=[driver_parameters, {"world_frame": world_frame}],
         ),
-        # The bridge stays available; the current scene has no USBL transceiver.
+        # Compatibility output; EKF's adapter reads BeaconInfo directly.
         Node(
             package="world_of_stonefish", executable="usbl_driver_node",
             namespace=vehicle, name="usbl_driver_node",

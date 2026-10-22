@@ -1,0 +1,94 @@
+Starting >>> baseline_robot_bringup
+[0.202s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/root/opt/ros/jazzy' in the environment variable AMENT_PREFIX_PATH doesn't contain any 'local_setup.*' files.
+UpdateCTestConfiguration  from :/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/CTestConfiguration.ini
+Parse Config file:/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/CTestConfiguration.ini
+   Site: ubuntu-external
+   Build name: (empty)
+ Add coverage exclude regular expressions.
+Create new tag: 20261022-1029 - Experimental
+UpdateCTestConfiguration  from :/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/CTestConfiguration.ini
+Parse Config file:/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/CTestConfiguration.ini
+Test project /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: navigation_sensors
+
+1: Test command: /usr/bin/python3 "-u" "/opt/ros/jazzy/share/ament_cmake_test/cmake/run_test.py" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/navigation_sensors.xunit.xml" "--package-name" "baseline_robot_bringup" "--output-file" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/navigation_sensors.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_navigation_sensors.py" "-o" "cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/navigation_sensors/.cache" "--junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/navigation_sensors.xunit.xml" "--junit-prefix=baseline_robot_bringup"
+1: Working Directory: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup
+1: Test timeout computed to be: 60
+1: -- run_test.py: invoking following command in '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup':
+1:  - /usr/bin/python3 -u -m pytest /home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_navigation_sensors.py -o cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/navigation_sensors/.cache --junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/navigation_sensors.xunit.xml --junit-prefix=baseline_robot_bringup
+1: ============================= test session starts ==============================
+1: platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+1: cachedir: build/baseline_robot_bringup/ament_cmake_pytest/navigation_sensors/.cache
+1: rootdir: /home/ubuntu2404_ros2/桌面/baseline_robot
+1: plugins: ament-pep257-0.17.5, ament-flake8-0.17.5, launch-testing-3.4.12, ament-xmllint-0.17.5, ament-copyright-0.17.5, ament-lint-0.17.5, launch-testing-ros-0.26.13, colcon-core-0.21.3, cov-4.1.0
+1: collected 17 items
+1: 
+1: ../../baseline_robot_bringup/test/test_navigation_sensors.py ........... [ 64%]
+1: ......                                                                   [100%]
+1: 
+1: - generated xml file: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/navigation_sensors.xunit.xml -
+1: ============================== 17 passed in 0.52s ==============================
+1: -- run_test.py: return code 0
+1: -- run_test.py: verify result file '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/navigation_sensors.xunit.xml'
+1/3 Test #1: navigation_sensors ...............   Passed    1.09 sec
+test 2
+    Start 2: usbl
+
+2: Test command: /usr/bin/python3 "-u" "/opt/ros/jazzy/share/ament_cmake_test/cmake/run_test.py" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl.xunit.xml" "--package-name" "baseline_robot_bringup" "--output-file" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_usbl.py" "-o" "cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl/.cache" "--junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl.xunit.xml" "--junit-prefix=baseline_robot_bringup"
+2: Working Directory: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup
+2: Test timeout computed to be: 60
+2: -- run_test.py: invoking following command in '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup':
+2:  - /usr/bin/python3 -u -m pytest /home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_usbl.py -o cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl/.cache --junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl.xunit.xml --junit-prefix=baseline_robot_bringup
+2: ============================= test session starts ==============================
+2: platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+2: cachedir: build/baseline_robot_bringup/ament_cmake_pytest/usbl/.cache
+2: rootdir: /home/ubuntu2404_ros2/桌面/baseline_robot
+2: plugins: ament-pep257-0.17.5, ament-flake8-0.17.5, launch-testing-3.4.12, ament-xmllint-0.17.5, ament-copyright-0.17.5, ament-lint-0.17.5, launch-testing-ros-0.26.13, colcon-core-0.21.3, cov-4.1.0
+2: collected 20 items
+2: 
+2: ../../baseline_robot_bringup/test/test_usbl.py ....................      [100%]
+2: 
+2: - generated xml file: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl.xunit.xml -
+2: ============================== 20 passed in 0.54s ==============================
+2: -- run_test.py: return code 0
+2: -- run_test.py: verify result file '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl.xunit.xml'
+2/3 Test #2: usbl .............................   Passed    1.09 sec
+test 3
+    Start 3: usbl_ekf
+
+3: Test command: /usr/bin/python3 "-u" "/opt/ros/jazzy/share/ament_cmake_test/cmake/run_test.py" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl_ekf.xunit.xml" "--package-name" "baseline_robot_bringup" "--output-file" "/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl_ekf.txt" "--command" "/usr/bin/python3" "-u" "-m" "pytest" "/home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_usbl_ekf.py" "-o" "cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl_ekf/.cache" "--junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl_ekf.xunit.xml" "--junit-prefix=baseline_robot_bringup"
+3: Working Directory: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup
+3: Test timeout computed to be: 45
+3: -- run_test.py: invoking following command in '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup':
+3:  - /usr/bin/python3 -u -m pytest /home/ubuntu2404_ros2/桌面/baseline_robot/baseline_robot_bringup/test/test_usbl_ekf.py -o cache_dir=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/ament_cmake_pytest/usbl_ekf/.cache --junit-xml=/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl_ekf.xunit.xml --junit-prefix=baseline_robot_bringup
+3: ============================= test session starts ==============================
+3: platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+3: cachedir: build/baseline_robot_bringup/ament_cmake_pytest/usbl_ekf/.cache
+3: rootdir: /home/ubuntu2404_ros2/桌面/baseline_robot
+3: plugins: ament-pep257-0.17.5, ament-flake8-0.17.5, launch-testing-3.4.12, ament-xmllint-0.17.5, ament-copyright-0.17.5, ament-lint-0.17.5, launch-testing-ros-0.26.13, colcon-core-0.21.3, cov-4.1.0
+3: collected 1 item
+3: 
+3: ../../baseline_robot_bringup/test/test_usbl_ekf.py .                     [100%]
+3: 
+3: - generated xml file: /home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl_ekf.xunit.xml -
+3: ============================== 1 passed in 6.77s ===============================
+3: -- run_test.py: return code 0
+3: -- run_test.py: verify result file '/home/ubuntu2404_ros2/桌面/baseline_robot/build/baseline_robot_bringup/test_results/baseline_robot_bringup/usbl_ekf.xunit.xml'
+3/3 Test #3: usbl_ekf .........................   Passed    7.32 sec
+
+100% tests passed, 0 tests failed out of 3
+
+Label Time Summary:
+pytest    =   9.51 sec*proc (3 tests)
+
+Total Test time (real) =   9.51 sec
+Finished <<< baseline_robot_bringup [9.59s]
+
+Summary: 1 package finished [9.72s]

@@ -1,6 +1,7 @@
 """Regress physical reference points, sensor timing and independent GPS truth."""
 
 import importlib.util
+import csv
 import math
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -10,6 +11,7 @@ import pytest
 import rclpy
 from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
+from rclpy.parameter import Parameter
 from sensor_msgs.msg import FluidPressure, Imu
 from stonefish_ros2.msg import DVL
 
@@ -28,6 +30,7 @@ def load_script(name):
 adapter = load_script("sensor_adapter")
 gps = load_script("gps_truth")
 evaluation = load_script("evaluate_navigation")
+navigation = load_script("navigation_path")
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -214,6 +217,36 @@ def test_evaluation_reports_known_3d_error():
     assert summary["horizontal_rmse_m"] == 5
     assert summary["rmse_3d_m"] == 13
     assert summary["max_error_3d_m"] == summary["final_error_3d_m"] == 13
+
+
+def test_acoustic_path_is_recorded_without_changing_estimate_truth_evaluation(tmp_path):
+    filename = tmp_path / "navigation.csv"
+    node = navigation.NavigationPath(parameter_overrides=[Parameter("csv_path", value=str(filename))])
+    node.path_publishers = {key: Mock() for key in node.path_publishers}
+    try:
+        for seconds in (1, 2):
+            msg = Odometry()
+            msg.header.frame_id = "baseline_robot/world"
+            msg.child_frame_id = "baseline_robot/base_link"
+            msg.pose.pose.orientation.w = 1.0
+            msg.header.stamp.sec = seconds
+            msg.pose.pose.position.x = float(seconds)
+            node.record("usbl", msg)
+        path = node.path_publishers["usbl"].publish.call_args.args[0]
+        assert [p.pose.position.x for p in path.poses] == [1.0, 2.0]
+        assert path.header.frame_id == "baseline_robot/world"
+        msg.header.frame_id = "baseline_robot/odom"
+        node.record("filtered", msg)
+        msg.header.frame_id = "baseline_robot/world"
+        node.record("truth", msg)
+        with filename.open() as stream:
+            rows = list(csv.DictReader(stream))
+        assert [row["source"] for row in rows] == ["usbl", "usbl", "filtered", "truth"]
+        assert [row["x"] for row in rows[:2]] == ["1.0", "2.0"]
+        streams, skipped = evaluation.read_trajectory(filename)
+        assert skipped == 0 and set(streams) == {"filtered", "truth"}
+    finally:
+        node.destroy_node()
 
 
 def test_gps_local_truth_is_not_throttled_or_fed_from_estimate():

@@ -1,0 +1,14 @@
+{
+  "truth": {
+    "frame": "baseline_robot/world",
+    "poses": 730
+  },
+  "filtered": {
+    "frame": "baseline_robot/odom",
+    "poses": 724
+  },
+  "usbl": {
+    "frame": "baseline_robot/world",
+    "poses": 157
+  }
+}

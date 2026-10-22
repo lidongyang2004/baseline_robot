@@ -1,0 +1,26 @@
+{
+  "samples": 656,
+  "first_stamp": 1792664796.5758193,
+  "last_stamp": 1792664936.237939,
+  "duration_sec": 139.662119761,
+  "horizontal_rmse_m": 0.1046746466020605,
+  "rmse_3d_m": 0.10467505079918266,
+  "max_horizontal_error_m": 0.3524550075944181,
+  "max_error_3d_m": 0.35245501336719515,
+  "final_horizontal_error_m": 0.030413465147604537,
+  "final_error_3d_m": 0.030432908593385075,
+  "final_error_xyz_m": [
+    0.002160506094835979,
+    0.03033662927384538,
+    0.0010876870730018862
+  ],
+  "csv_path": "/home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-22-usbl/trajectory.csv",
+  "skipped_incomplete_rows": 0,
+  "profile": "usbl",
+  "acceptance_limits_m": {
+    "horizontal_rmse": 0.3,
+    "rmse_3d": 0.35,
+    "final_error_3d": 0.35
+  },
+  "passed": true
+}

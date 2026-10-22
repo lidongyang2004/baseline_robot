@@ -1,4 +1,4 @@
-# EKF: IMU + DVL + depth only. GPS is evaluation-only.
+# EKF: IMU + DVL + depth + two-way USBL x/y. GPS is evaluation-only.
 # State masks: position XYZ, RPY, velocity XYZ, angular velocity RPY, acceleration XYZ.
 /baseline_robot/ekf_filter_node:
   ros__parameters:
@@ -55,6 +55,22 @@
     odom0_pose_use_child_frame: false
     odom0_pose_rejection_threshold: 5.0
     odom0_twist_rejection_threshold: 1.0
+    # use_usbl:=false removes this input and lag smoothing in localization.launch.py.
+    odom1: usbl/odometry
+    odom1_config: [
+      true, true, false,
+      false, false, false,
+      false, false, false,
+      false, false, false,
+      false, false, false
+    ]
+    odom1_queue_size: 10
+    odom1_differential: false
+    odom1_relative: false
+    odom1_pose_use_child_frame: false
+    odom1_pose_rejection_threshold: 5.0
+    smooth_lagged_data: true
+    history_length: 2.0
     # Full 15 x 15 process-noise matrix; values unchanged.
     process_noise_covariance: [
       1e-1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,

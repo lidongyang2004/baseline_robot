@@ -1,0 +1,21 @@
+/baseline_robot/usbl_adapter
+  Subscribers:
+    /baseline_robot/stonefish/usbl/beacon_info: stonefish_ros2/msg/BeaconInfo
+  Publishers:
+    /baseline_robot/usbl/odometry: nav_msgs/msg/Odometry
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /baseline_robot/usbl_adapter/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /baseline_robot/usbl_adapter/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /baseline_robot/usbl_adapter/get_parameters: rcl_interfaces/srv/GetParameters
+    /baseline_robot/usbl_adapter/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /baseline_robot/usbl_adapter/list_parameters: rcl_interfaces/srv/ListParameters
+    /baseline_robot/usbl_adapter/set_parameters: rcl_interfaces/srv/SetParameters
+    /baseline_robot/usbl_adapter/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+

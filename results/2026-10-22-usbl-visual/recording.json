@@ -1,0 +1,17 @@
+{
+  "mission_start_stamp": 1792666130.8191478,
+  "mission_end_stamp": 1792666270.23484,
+  "csv_samples_in_window": {
+    "usbl": 140,
+    "filtered": 639,
+    "truth": 643,
+    "gps_truth_fix": 136
+  },
+  "csv_rates_hz_in_window": {
+    "usbl": 1.0000296385376133,
+    "filtered": 4.582780836481345,
+    "truth": 4.613883319192851,
+    "gps_truth_fix": 0.9733071314577416
+  },
+  "note": "CSV filtered/truth are sampled paths, not native topic rates. USBL records each approximately 1 Hz observation."
+}

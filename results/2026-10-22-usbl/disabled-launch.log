@@ -1,0 +1,27 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu2404_ros2/.ros/log/2026-10-22-18-29-28-438239-ubuntu-external-9357
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [ekf_node-1]: process started with pid [9360]
+[INFO] [static_transform_publisher-2]: process started with pid [9361]
+[INFO] [gps_truth.py-3]: process started with pid [9362]
+[static_transform_publisher-2] [INFO] [1792664968.529536663] [baseline_robot_world_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-2] translation: ('0.000000', '0.000000', '0.000000')
+[static_transform_publisher-2] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-2] from 'baseline_robot/world' to 'baseline_robot/odom'
+[gps_truth.py-3] [INFO] [1792664968.907881430] [baseline_robot.gps_truth]: Virtual GPS truth only: /baseline_robot/gps/ground_truth/fix; NOT fused
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [gps_truth.py-3]: sending signal 'SIGINT' to process[gps_truth.py-3]
+[INFO] [static_transform_publisher-2]: sending signal 'SIGINT' to process[static_transform_publisher-2]
+[INFO] [ekf_node-1]: sending signal 'SIGINT' to process[ekf_node-1]
+[static_transform_publisher-2] [INFO] [1792664977.345664885] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ekf_node-1] [INFO] [1792664977.345642677] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[gps_truth.py-3] Traceback (most recent call last):
+[gps_truth.py-3]   File "/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/lib/baseline_robot_bringup/gps_truth.py", line 205, in <module>
+[gps_truth.py-3]     main()
+[gps_truth.py-3]   File "/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/lib/baseline_robot_bringup/gps_truth.py", line 199, in main
+[gps_truth.py-3]     node.destroy_node()
+[gps_truth.py-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 1968, in destroy_node
+[ERROR] [static_transform_publisher-2]: process has died [pid 9361, exit code -2, cmd '/opt/ros/jazzy/lib/tf2_ros/static_transform_publisher --frame-id baseline_robot/world --child-frame-id baseline_robot/odom --ros-args -r __node:=baseline_robot_world_odom'].
+[gps_truth.py-3]     self.__node.destroy_when_not_in_use()
+[gps_truth.py-3] KeyboardInterrupt
+[ERROR] [ekf_node-1]: process has died [pid 9360, exit code -2, cmd '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/root/opt/ros/jazzy/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node -r __ns:=/baseline_robot --params-file /tmp/launch_params_u5l4jqjk'].
+[ERROR] [gps_truth.py-3]: process has died [pid 9362, exit code -2, cmd '/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/lib/baseline_robot_bringup/gps_truth.py --ros-args -r __node:=gps_truth -r __ns:=/baseline_robot --params-file /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/config/baseline_robot/gps_truth.yaml'].

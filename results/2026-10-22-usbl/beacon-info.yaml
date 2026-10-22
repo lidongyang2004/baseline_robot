@@ -1,0 +1,20 @@
+header:
+  stamp:
+    sec: 1792664993
+    nanosec: 222533286
+  frame_id: baseline_robot/usbl_station
+beacon_id: 2
+range: 10.399999618530273
+azimuth: 0.33161255717277527
+elevation: -0.06981316953897476
+relative_position:
+  x: 9.809439534655846
+  y: 3.3776609026773317
+  z: -0.7254673269389035
+local_orientation:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  w: 1.0
+local_depth: 1.0
+---

@@ -95,7 +95,9 @@ def main():
     parser.add_argument("--start-time", type=float)
     parser.add_argument("--end-time", type=float)
     parser.add_argument("--json", type=Path, dest="json_path")
-    parser.add_argument("--check", action="store_true", help="Check the near-zero-noise acceptance limits")
+    parser.add_argument("--profile", choices=("baseline", "usbl"), default="baseline",
+                        help="Acceptance limits: baseline (near-zero noise) or usbl (acoustic noise)")
+    parser.add_argument("--check", action="store_true", help="Check the selected acceptance limits")
     args = parser.parse_args()
     if (not math.isfinite(args.warmup) or args.warmup < 0
             or not math.isfinite(args.max_gap) or args.max_gap <= 0):
@@ -109,9 +111,12 @@ def main():
     summary = summarize(pairs)
     summary["csv_path"] = str(args.csv_path.resolve())
     summary["skipped_incomplete_rows"] = skipped
-    summary["passed"] = (summary["horizontal_rmse_m"] < 0.10
-                         and summary["rmse_3d_m"] < 0.15
-                         and summary["final_error_3d_m"] < 0.10)
+    limits = (0.30, 0.35, 0.35) if args.profile == "usbl" else (0.10, 0.15, 0.10)
+    summary["profile"] = args.profile
+    summary["acceptance_limits_m"] = dict(zip(
+        ("horizontal_rmse", "rmse_3d", "final_error_3d"), limits))
+    summary["passed"] = all(summary[key] < limit for key, limit in zip(
+        ("horizontal_rmse_m", "rmse_3d_m", "final_error_3d_m"), limits))
     output = json.dumps(summary, ensure_ascii=False, indent=2)
     if args.json_path:
         args.json_path.write_text(output + "\n", encoding="utf-8")

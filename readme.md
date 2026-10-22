@@ -2,11 +2,78 @@
 
 基于 **ROS 2 Jazzy、Stonefish 和 RViz** 的单 AUV 导航仿真项目。本文已整合原《从零开始_单AUV组合导航.md》，编译、运行、结果和学习说明统一保存在本 README。
 
-当前只运行一艘 `baseline_robot`：**EKF 融合 IMU、DVL 和深度，虚拟 GPS 仅作独立真值参考**，不参与融合或 world/odom 初始化。项目支持 20 m × 20 m 矩形航点、3 m 目标深度、0.8 m/s 目标航速，提供 RViz 估计/真值轨迹、CSV 保存和时间同步误差评估。
+当前只运行一艘 `baseline_robot`：**EKF 融合 IMU、DVL、深度和双程 USBL 水平位置，虚拟 GPS 仅作独立真值参考**，不参与融合或 world/odom 初始化。项目支持 20 m × 20 m 矩形航点、3 m 目标深度、0.8 m/s 目标航速，提供 RViz 估计/真值轨迹、CSV 保存和时间同步误差评估。
 
-USBL 固定基站、世界位置适配及融合尚未实现。当前 EKF 是通用融合基线，尚不是带传感器偏置等完整模型的捷联惯导 ESKF。虚拟 GPS 由 Stonefish 独立真实位置生成，在水下仍可作为仿真参考，**不能当作实际水下 GPS**。
+已加入已知位置的固定 USBL 和艇上应答器，通过原生 PING/ACK 完成双程测距，距离与角度转换为 ENU 水平位置后融合。默认启用，可用 `use_usbl:=false` 关闭。当前 EKF 是通用融合基线，尚不是带传感器偏置等完整模型的捷联惯导 ESKF。虚拟 GPS 由 Stonefish 独立真实位置生成，在水下仍可作为仿真参考，**不能当作实际水下 GPS**。
 
-## 本次重新构建与运行结果（2026-10-22）
+## 含双程 USBL 的完整航线实测（2026-10-22）
+
+已重新启动 Stonefish、RViz、EKF 与控制/任务节点，执行全部四个矩形航点；日志确认 `Done with all waypoints`，约 **127.4 秒**后返回 `start`，继续观测 12 秒后关闭控制器并正常退出。**39 项 pytest 全部通过**，包含声学几何、时间、协方差、真实 EKF 对照和新增声学轨迹记录回归。
+
+下图来自这一次完整运行：绿色是 **IMU / DVL / 深度 / USBL 融合轨迹**，橙色是独立真值，紫色圆点是约 1 Hz 的 USBL 位置观测，紫色星标是已知位置的固定基站。USBL 仅将 x/y 加入 EKF；右上角紫色 z 仅供展示，融合深度仍来自压力计。
+
+![含双程 USBL 的完整矩形航线、声学观测、深度与定位误差](assets/navigation-results.png)
+
+任务完成后切回 `start`，图中深度随控制状态发生回升。三维图使用相同时间窗和同一组数据，深度轴向下为正。声学散点保留测量噪声；融合轨迹与真值很接近，在全航线尺度下会重叠。
+
+![双程 USBL 声学位置、固定基站与融合三维航迹](assets/usbl-trajectory-3d.png)
+
+只统计 **survey 开始至任务完成后 12 秒**，共 643 个估计/真值时间同步样本和 **140 个声学观测**。估计线性插值到真值时间戳；图中的声学误差在声学测量时间插值真值，不按 CSV 行号配对，不做事后平移或旋转对齐。
+
+| 指标 | 本次 USBL 融合实测 | 预设验收阈值 |
+|---|---:|---:|
+| 水平 RMSE | 0.110425 m | < 0.30 m |
+| 三维 RMSE | 0.110425 m | < 0.35 m |
+| 最大三维误差 | 0.266725 m | 记录值 |
+| 末端三维误差 | 0.076960 m | < 0.35 m |
+| 阈值检查 | **全部通过** | `--profile usbl --check` 返回 0 |
+
+本次 EKF 接收频率约 **19.5 Hz**，IMU/真值约 20 Hz，DVL/深度约 5 Hz，声学位置约 **1.00 Hz**。CSV 中估计和真值按 Path 周期采样，不能把 CSV 行数当作传感器原始发布频率。IMU/DVL 仍接近零噪声、无海流，USBL 使用非零测距和测角噪声；这一次结果不代表真实海试精度，也不能与未加入声学噪声的旧基线直接比较抗噪性能。
+
+原始数据与运行证据：
+
+- [含声学观测的轨迹 CSV](results/2026-10-22-usbl-visual/trajectory.csv)、[同步指标](results/2026-10-22-usbl-visual/metrics.json)、[任务完成与频率](results/2026-10-22-usbl-visual/mission.json)、[声学观测数量](results/2026-10-22-usbl-visual/recording.json)。
+- [EKF 实际订阅](results/2026-10-22-usbl-visual/ekf-node.txt)、[三条 Path 的坐标系与长度](results/2026-10-22-usbl-visual/paths.json)、[轨迹节点接口](results/2026-10-22-usbl-visual/path-node.txt)、[话题及类型](results/2026-10-22-usbl-visual/topics.txt)。
+- [完整启动与退出日志](results/2026-10-22-usbl-visual/launch.log)、[任务日志](results/2026-10-22-usbl-visual/mission.log)、[构建日志](results/2026-10-22-usbl-visual/build.log)、[39 项测试日志](results/2026-10-22-usbl-visual/test.log)。
+- [二维结果矢量图](results/2026-10-22-usbl-visual/navigation-results.svg)、[三维轨迹矢量图](results/2026-10-22-usbl-visual/usbl-trajectory-3d.svg)。
+
+复算指标并重画本页两张图片（需要 `matplotlib`、`numpy`、`fontconfig` 和 Noto CJK 字体）：
+
+```bash
+source scripts/env.sh
+ros2 run baseline_robot_bringup evaluate_navigation.py \
+  results/2026-10-22-usbl-visual/trajectory.csv --profile usbl --check \
+  --start-time 1792666130.8191478 --end-time 1792666270.23484
+python3 results/2026-10-22-usbl-visual/plot_results.py
+```
+
+本次使用隔离的 `ROS_DOMAIN_ID=90`，RViz 已启动并加载绿色融合、橙色真值和紫色声学轨迹的显示配置；三条 Path 均持续发布，已记录坐标系与长度。桌面截图接口拒绝了窗口捕获，因此上方展示的是实际数据生成的图，并非新窗口截图。日志仍包含 Stonefish 海面着色器的 `Failed to link program!`，未阻止完整任务；没有修改系统 Stonefish 核心库。
+
+重新运行时，两终端均加载环境并设置相同 domain。终端 A：
+
+```bash
+source scripts/env.sh
+export ROS_DOMAIN_ID=90
+ros2 launch baseline_robot_bringup bringup_simulation.launch.py \
+  use_usbl:=true rviz:=true csv_path:=/tmp/baseline_usbl_trial_02.csv
+```
+
+终端 B：
+
+```bash
+source scripts/env.sh
+export ROS_DOMAIN_ID=90
+python3 results/2026-10-22/run_survey.py --output-dir /tmp/baseline_usbl_trial_02
+```
+
+CSV 和结果目录使用尚未存在的新名字，避免覆盖实验数据。日常使用可保留默认 domain。
+
+<details>
+<summary>接入前的基线结果和旧界面截图（历史参考）</summary>
+
+**USBL 接入前的基线结果（2026-10-22）**
+
+本节数据和截图保留自 IMU/DVL/深度基线，**不包含新增 USBL**；复现本节实验须添加 `use_usbl:=false`。声学融合结果与说明见第 8 节。
 
 在不加载旧工作空间的情况下，已重新构建 **11 个依赖包和本项目 4 个包**；17 项 pytest 传感器回归全部通过。实际启动 Stonefish、RViz、EKF 和控制/任务节点，执行全部四个矩形航点，日志确认 `Done with all waypoints`，约 **127.2 秒**后自动返回 `start`，继续观测 12 秒并关闭控制器。验证结束后 SIGINT 退出，仿真与 ROS 节点均正常结束。
 
@@ -22,7 +89,7 @@ USBL 固定基站、世界位置适配及融合尚未实现。当前 EKF 是通�
 
 IMU、EKF 和本地真值实测约 20 Hz，DVL/深度约 5 Hz，虚拟 GPS 经纬高约 0.97 Hz。实际节点订阅也确认 EKF 只接收 IMU、DVL 与深度，GPS 真值节点不订阅 EKF。此结果仅适用于当前近零噪声、无海流场景；定位误差和航点/深度跟踪误差是不同指标，不能用毫米级估计误差证明真实环境中的导航或控制精度。
 
-![本次完整矩形航线、深度响应和定位误差](assets/navigation-results.png)
+![USBL 接入前的基线结果图](assets/navigation-results-baseline.png)
 
 **Stonefish 实际运行界面**：一艘黄色 AUV，左侧 `Trackball center` 选择 `baseline_robot` 后相机跟随艇；滚轮调整远近。
 
@@ -54,6 +121,9 @@ python3 results/2026-10-22/plot_results.py
 重画结果图需要 Python `matplotlib`、`numpy`、`fontconfig` 和 Noto CJK 字体。本次运行使用隔离的 `ROS_DOMAIN_ID=84`；重做验证时，启动终端和任务终端都执行 `export ROS_DOMAIN_ID=84`，指定新的 CSV 文件；另一个终端加载环境后运行 `python3 results/2026-10-22/run_survey.py --output-dir /tmp/baseline_trial_02`。该[自动 survey 验证脚本](results/2026-10-22/run_survey.py)会把新任务的 `mission.json` 保存到指定目录，并拒绝覆盖已有结果。日常手动运行可使用系统默认 domain，所有终端保持一致即可。
 
 
+
+</details>
+
 ## 项目目录
 
 ```text
@@ -68,7 +138,7 @@ baseline_robot/
 ├── baseline_robot_description/   # URDF、网格、RViz
 ├── scripts/                      # 环境、依赖构建脚本、版本清单与补丁
 ├── assets/                       # 本次运行截图与结果图
-├── results/2026-10-22/           # 本次 CSV、指标、运行与验证日志
+├── results/                     # 基线、USBL 验证及最新含声学观测的运行数据
 ├── .deps -> ~/.cache/baseline_robot/dependencies  # 忽略的依赖缓存
 └── readme.md                     # 完整中文入门与运行文档
 ```
@@ -85,7 +155,7 @@ baseline_robot/
 | IMU / INS | IMU 测角速度和加速度；INS 是用这些量解算姿态、速度和位置的系统 | 当前用 IMU 驱动和 EKF 做基础融合 |
 | DVL | 测艇相对海底或水体的速度 | 约束速度，减缓惯性积分漂移 |
 | 深度计 | 测水压并换算深度 | 约束垂直位置 |
-| USBL | 通过声学距离和角度提供相对位置观测 | 后续用已知位置的基站约束水平漂移 |
+| USBL | 通过声学距离和角度提供相对位置观测 | 已知位置的固定基站提供水平绝对位置约束 |
 | robot_localization | 现成的 EKF/UKF 定位工具 | 当前 EKF 发布 `/baseline_robot/odometry/filtered` |
 | MVP Mission / Control | “往哪走”和“推进器怎么转” | 航点引导和闭环控制 |
 
@@ -103,7 +173,8 @@ flowchart LR
   S --> T[真实位置转虚拟 GPS 真值]
   P --> R[RViz]
   T --> R
-  U[USBL 待接入] -.位置观测.-> E
+  U[固定站 USBL + 艇上应答器] --> A[双程距离和角度转 ENU x/y]
+  A --> E
 ```
 
 ## 2. 认识文件：先看这几个就够了
@@ -118,6 +189,8 @@ flowchart LR
 | `baseline_robot_bringup/config/baseline_robot/bhv_params.yaml` | 航点和速度 |
 | `baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml` | start / survey 等任务状态 |
 | `baseline_robot_bringup/config/baseline_robot/localization.yaml` | EKF 使用哪些传感器 |
+| `baseline_robot_bringup/scripts/usbl_adapter.py` | 固定站声学测量转 ENU 艇位，传播协方差并补偿延迟 |
+| `baseline_robot_bringup/config/baseline_robot/usbl.yaml` | 已知基站位姿、声速、量程、噪声与分辨率 |
 | `baseline_robot_bringup/config/baseline_robot/sim_params.yaml` | 传感器驱动和推进器话题 |
 | `baseline_robot_description/urdf/baseline_robot/base.urdf` | ROS 模型和传感器安装坐标系 |
 | `baseline_robot_description/config/config.rviz` | RViz 默认显示配置 |
@@ -192,6 +265,7 @@ ros2 launch baseline_robot_bringup bringup_simulation.launch.py
 | 启动参数 | 默认值 | 含义 |
 |---|---|---|
 | `rviz` | `true` | 是否打开 RViz |
+| `use_usbl` | `true` | 是否启动声学适配并将 USBL x/y 融合到 EKF |
 | `record_path` | `true` | 是否发布轨迹并写入 CSV |
 | `csv_path` | 空字符串 | 自动生成带时间戳的 CSV；也可指定尚不存在的文件 |
 
@@ -216,6 +290,7 @@ ros2 topic list -t
 ros2 topic echo /baseline_robot/imu/data --once
 ros2 topic echo /baseline_robot/dvl/twist --once
 ros2 topic echo /baseline_robot/depth --once
+ros2 topic echo /baseline_robot/usbl/odometry --once
 ros2 topic echo /baseline_robot/odometry/filtered --once
 ros2 topic echo /baseline_robot/gps/ground_truth/fix --once
 ros2 topic echo /baseline_robot/gps/ground_truth/odometry --once
@@ -270,13 +345,13 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 
 ## 6. 在 RViz 里看什么
 
-默认 Fixed Frame 为 `baseline_robot/odom`；绿色 `EKF trajectory` 是定位估计，橙色 `Virtual GPS truth (evaluation only)` 是虚拟 GPS 真值，`AUV` 显示机器人模型。
+默认 Fixed Frame 为 `baseline_robot/odom`；绿色 `EKF trajectory` 是含 USBL 的融合估计，橙色 `Virtual GPS truth (evaluation only)` 是虚拟 GPS 真值，紫色 `USBL acoustic fixes (1 Hz)` 是独立声学位置观测，`AUV` 显示机器人模型。关闭声学融合时不会产生新的紫色轨迹点。
 
 鼠标左键拖动旋转视角，中键拖动平移，滚轮缩放。先展开左侧 Displays 的 Status，遇到红色先读错误信息；RobotModel 的 `TF Prefix` 必须是 `baseline_robot`。
 
 - `No transform`：检查 Fixed Frame 拼写以及 `world → odom → base_link` 的 TF。world/odom 使用固定原点的恒等变换，不依赖 GPS；修改艇初始 x/y 时也要重新定义估计原点关系。
 - 有艇无轨迹：检查 `/baseline_robot/navigation/path` 是否有消息；Path 节点默认每 0.2 秒保留一点，显示最近 6000 点。
-- 两条轨迹错开或方向反了：先检查时间、NED/ENU、初始化原点和传感器杆臂，不要先调 EKF 噪声。
+- 轨迹错开或方向反了：先检查时间、NED/ENU、初始化原点和传感器杆臂，不要先调 EKF 噪声。
 - RViz 的 `2D Goal Pose` 按钮不能启动本项目的航点任务；这里使用 MVP 的服务接口。
 
 坐标最容易混：ENU 是 x 东、y 北、z 上；NED 是 x 北、y 东、z 下。仅当原点一致时，位置可用 `ENU = [NED_y, NED_x, -NED_z]` 换算。当前 world 与 odom 的原点和 ENU 轴固定一致，估计 x/y 从 0 开始；虚拟 GPS 的本地表示也是 ENU。CSV 仍保留 frame，比较之前应确认运行配置中的关系，并按时间同步，不能把经纬度直接与米相减。
@@ -288,6 +363,8 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 | `/baseline_robot/imu/data` | `sensor_msgs/msg/Imu` | EKF 的姿态、角速度、加速度输入 |
 | `/baseline_robot/dvl/twist` | `geometry_msgs/msg/TwistWithCovarianceStamped` | EKF 速度输入 |
 | `/baseline_robot/depth` | `nav_msgs/msg/Odometry` | EKF 垂直位置输入 |
+| `/baseline_robot/stonefish/usbl/beacon_info` | `stonefish_ros2/msg/BeaconInfo` | 固定站原始距离、角度和相对位置 |
+| `/baseline_robot/usbl/odometry` | `nav_msgs/msg/Odometry` | ENU 艇位，EKF 仅使用 x/y |
 | `/baseline_robot/odometry/filtered` | `nav_msgs/msg/Odometry` | 融合估计输出 |
 | `/baseline_robot/ground_truth` | `nav_msgs/msg/Odometry` | 仿真原始真值，坐标系 `world_ned` |
 | `/baseline_robot/gps/ground_truth/fix` | `sensor_msgs/msg/NavSatFix` | 虚拟 GPS 参考经纬高 |
@@ -295,6 +372,7 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 | `/baseline_robot/gps/fix` | `sensor_msgs/msg/NavSatFix` | 真实 GPS 仿真，水下无定位 |
 | `/baseline_robot/navigation/path` | `nav_msgs/msg/Path` | 绿色融合轨迹 |
 | `/baseline_robot/navigation/truth_path` | `nav_msgs/msg/Path` | 橙色虚拟 GPS 真值轨迹 |
+| `/baseline_robot/navigation/usbl_path` | `nav_msgs/msg/Path` | 紫色 USBL 位置观测轨迹，约 1 Hz |
 
 
 当前链路：
@@ -302,14 +380,15 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 ```text
 imu/stonefish/data → imu_driver → imu/data ──┐
 dvl/stonefish/raw → sensor_adapter → dvl/twist ┤
-pressure + imu/data → sensor_adapter → depth ─┘→ EKF → odometry/filtered
+pressure + imu/data → sensor_adapter → depth ─┤→ EKF → odometry/filtered
+固定站 USBL ↔ 艇上应答器 → BeaconInfo → usbl_adapter → usbl/odometry ─┘
 
 仿真 ground_truth → gps_truth → gps/ground_truth/fix（经纬高，参考）
                             → gps/ground_truth/odometry（ENU，显示/评估）
 真实 gps/fix → 仅水面可用，不接入 EKF
 ```
 
-`localization.yaml` 中：`imu0` 使用姿态、角速度和加速度；`twist0` 使用 DVL 三轴速度；`odom0` 使用深度 z；已移除 `odom1`，GPS 不进入 EKF。GPS 也不参与 world/odom 初始化。
+`localization.yaml` 中：`imu0` 使用姿态、角速度和加速度；`twist0` 使用 DVL 三轴速度；`odom0` 使用深度 z；`odom1` 使用 USBL x/y（`use_usbl:=false` 时移除）。GPS 不进入 EKF。GPS 也不参与 world/odom 初始化。
 
 EKF 每次先预测状态和不确定度，再用到达的传感器观测修正。最终 `/baseline_robot/odometry/filtered` 连续消息就是估计轨迹；无需额外再对该位置积分。新增 Path 节点只把估计结果连成线并保存，不另算滤波。
 
@@ -321,7 +400,7 @@ x y z | roll pitch yaw | vx vy vz | vroll vpitch vyaw | ax ay az
 
 布尔量对应输入消息自身坐标系中的变量，TF 用来完成坐标转换。加速度去重力设置必须和 IMU 实际数据一致。官方说明见文末。
 
-当前 IMU/DVL 场景大部分噪声为 0，适合排查数据链路，不能用这样的结果证明算法抗噪能力。做实验前应设置合理非零测量噪声、非零协方差，并验证坐标/符号/安装位置。
+当前 IMU/DVL 场景大部分噪声为 0，新增 USBL 使用非零距离/角度噪声，适合排查数据链路，不能用这样的结果证明算法抗噪能力。做实验前应设置合理非零测量噪声、非零协方差，并验证坐标/符号/安装位置。
 
 本仓库已用 `sensor_adapter.py` 替换外部 DVL 和压力转换节点，保留原话题和消息类型，不修改外部依赖源码：
 
@@ -337,52 +416,58 @@ x y z | roll pitch yaw | vx vy vz | vroll vpitch vyaw | ax ay az
 ```bash
 ros2 bag record -o /tmp/baseline_trial_01 \
   /baseline_robot/imu/data /baseline_robot/dvl/twist /baseline_robot/depth \
+  /baseline_robot/stonefish/usbl/beacon_info /baseline_robot/usbl/odometry \
   /baseline_robot/gps/fix /baseline_robot/gps/ground_truth/fix \
   /baseline_robot/gps/ground_truth/odometry \
   /baseline_robot/odometry/filtered /baseline_robot/ground_truth /tf /tf_static
 ```
 
-CSV 中 `source=filtered` 是融合估计，`source=truth` 是虚拟 GPS 的 ENU 本地表示，`source=gps_truth_fix` 保存参考经纬高（`latitude/longitude/altitude` 列）。位置表示使用 m，经纬度使用度，高程使用 m。经纬高约 1 Hz，本地真值里程计约 20 Hz；两条 Path 均每 0.2 秒保留一点。不同数据须按时间同步，不能按行号对齐。
+CSV 中 `source=filtered` 是融合估计，`source=truth` 是虚拟 GPS 的 ENU 本地表示，`source=usbl` 是世界坐标下的声学观测（包含仅展示、不融合的 z），`source=gps_truth_fix` 保存参考经纬高（`latitude/longitude/altitude` 列）。位置表示使用 m，经纬度使用度，高程使用 m。经纬高约 1 Hz，本地真值里程计约 20 Hz；估计和真值 Path 每 0.2 秒保留一点，声学 Path 保留约 1 Hz 的观测。不同数据须按时间同步，不能按行号对齐。
 
 默认 world/odom 恒等关系下运行以下命令，可将估计位置按时间插值到真值时间戳，排除启动前 5 秒和跨越超过 1 秒的数据缺口：
 
 ```bash
-ros2 run baseline_robot_bringup evaluate_navigation.py /tmp/baseline_trial_01.csv --check
+ros2 run baseline_robot_bringup evaluate_navigation.py /tmp/baseline_trial_01.csv --profile usbl --check
 ```
 
-输出水平及三维 RMSE、最大误差、末端三维误差。`--check` 的验收阈值分别为水平 RMSE <0.10 m、三维 RMSE <0.15 m、末端三维误差 <0.10 m，面向当前近零噪声场景；设置非零噪声后需重新制定实验指标。可用 `--json /tmp/metrics.json` 保存结果，或用 `--start-time` / `--end-time` 指定测量时间范围。脚本不会根据结果任意平移或旋转轨迹，改变 world/odom 关系后应先实现正确坐标变换。
+输出水平及三维 RMSE、最大误差、末端三维误差。`--check` 的验收阈值分别为水平 RMSE <0.10 m、三维 RMSE <0.15 m、末端三维误差 <0.10 m，面向关闭 USBL 的近零噪声基线。默认声学场景使用 `--profile usbl --check`，阈值分别为 0.30 / 0.35 / 0.35 m。可用 `--json /tmp/metrics.json` 保存结果，或用 `--start-time` / `--end-time` 指定测量时间范围。脚本不会根据结果任意平移或旋转轨迹，改变 world/odom 关系后应先实现正确坐标变换。
 
 **这里的 GPS 真值明确是虚拟参考**：本机 Stonefish 的真实 GPS `/baseline_robot/gps/fix` 在水下为 `STATUS_NO_FIX`，且其发布器的 altitude 恒为 0，无法提供完整三维水下真值。新增 `gps_truth.py` 从独立 `/baseline_robot/ground_truth` 读取艇 Base 原点的真实 NED 位置，用固定 WGS84 原点转换成经纬高，同时发布 ENU 本地表示。它不订阅融合结果，不发布 TF，不反馈定位。不能将它描述为真实水下 GPS。
 
 当前真值使用艇 Base 原点而非有杆臂的真实 GPS 天线，和滤波器 base_link 对齐用于比较；若以后修改基准点/安装位置，要同步处理。`gps_truth.yaml` 的 datum 必须和 `single_auv.scn` 的 `<ned>` 一致。真值绝不能接入 EKF 当作定位传感器。
 
-## 8. 再把 USBL 接成真正的第三类定位输入
+## 8. 双程 USBL 已接入 EKF
 
-本仓库 `scenarios/baseline_robot.scn` 尚未配置 USBL `<comm>`；`usbl_driver_node` 只是把 `BeaconInfo` 的相对位置转成自定义消息。`localization.yaml` 也没有 USBL 输入。所以仅启动适配节点不能完成 USBL 融合。
+最新完整航线、二维/三维图片和验收指标见本文顶部。历史首次声学融合验证保留在 [results/2026-10-22-usbl](results/2026-10-22-usbl/metrics.json)；本次含逐次声学观测的可重画数据保存在 [results/2026-10-22-usbl-visual](results/2026-10-22-usbl-visual/trajectory.csv)。
 
-单 AUV 的 USBL 实验仍需要一个**已知位置的固定基站/应答器**。它是声学参考设备，不是第二艘 AUV。建议在跑通前面步骤后按以下顺序实现：
+固定站是世界坐标系中的独立声学设备，不增加第二艘艇。`single_auv.scn` 中 USBL 的 ID 为 1，NED 位置 `(-10,-5,1) m`、姿态为零；对应 ENU 位置 `(-5,-10,-1) m`。艇上 ID 为 2 的应答器与 Base 原点重合。双方配置 360° 视场、1000 m 量程，关闭遮挡检查，固定站约 1 Hz 自动 ping。Stonefish 原生实现发送 PING、接收 ACK，并用往返传播距离的一半计算斜距；无需添加不存在的 `two_way` XML 属性。
 
-1. 在单艇场景中添加固定基站，给基站与艇的声学设备不同 `device_id`，配置连接、量程、视场和 autoping。先看到真实的 BeaconInfo；检查接收端在哪、返回的位置指向谁。
-2. 把原始 USBL 相对位置转换为“艇基准点在世界坐标系中的位置”。如果基站接收器测得艇的位置，形式为 `p_world_auv = p_world_station + R_world_station * p_station_auv`，还需补偿艇上应答器到 base_link 的杆臂。若设备装在艇上测基站，公式方向和正负号不同，不能直接套用。
-3. 完成 NED/ENU、传感器安装旋转、杆臂和世界原点转换，发布 `PoseWithCovarianceStamped` 或 `Odometry`，协方差用 m²，时间戳保留测量时刻。量程/角度噪声转位置协方差；先考虑传播延迟和离群值，再谈滤波权重。
-4. 接入 EKF 的位置输入，第一版用 USBL x/y、压力深度 z；不要融合虚构的 USBL 姿态。将绝对位置放到连续 odom 中的单 EKF 可用于教学，但可能产生跳变；控制更稳定的方案是局部 IMU/DVL/深度滤波加全局 USBL 滤波，分开 map 与 odom。
-5. 做消融实验：IMU；IMU+DVL+深度；IMU+DVL+深度+USBL。保持运动、噪声和时间设置可比；有条件固定随机种子，并多次重复。
+链路为：`固定站 USBL ↔ 艇上应答器 → stonefish/usbl/beacon_info → usbl_adapter → usbl/odometry → EKF odom1`。现有 `usbl_driver_node` 的 `usbl_data` 兼容输出继续保留；定位适配器直接读取包含测距与测角的 `BeaconInfo`。
 
-如果选择以最终接口 `/baseline_robot/usbl/odometry` 接入，示意配置如下。**这段只是接口设计，适配器和基站尚未实现，直接复制不会产生 USBL 数据。**
+适配器只使用声学观测和已知基站位姿：`p_ENU_base = p_ENU_station + R_ENU_station × p_station_beacon`。它不订阅滤波结果或真值，也不使用消息中的本机姿态/深度来替代已知站位。**首版应答器必须与 Base 重合**；若改变安装位置，须先实现对应时刻的艇姿态和杆臂补偿，不能继续直接把应答器位置当作艇位。
 
-```yaml
-odom2: usbl/odometry
-odom2_config: [true, true, false,
-               false, false, false,
-               false, false, false,
-               false, false, false,
-               false, false, false]
-odom2_differential: false
-odom2_relative: false
-odom2_queue_size: 10
+距离噪声标准差为 `0.05 m`，水平/垂直角噪声标准差为 `0.2°/0.5°`，距离/角度分辨率为 `0.1 m/0.1°`。`usbl.yaml` 必须与场景保持一致。适配器将角度转弧度，计入分辨率方差 `resolution²/12`，用球坐标雅可比和基站旋转传播完整位置协方差，另加 `0.01 m²` 对角误差预算，涵盖未精确建模的量化偏差和调度误差。场景量化有截断偏差，这仍是近似误差模型。
+
+当前 ROS 桥使用接收时间打戳，没有暴露声学应答时刻。适配器按 `t_measurement ≈ t_receive − range/1531` 回推单程传播时间；`1531 m/s` 与本机 Stonefish 常数一致。此方法在当前实时仿真、固定站和瞬时 ACK 假设下近似有效，**不是精确的硬件测量时间**，暂停/慢速仿真和调度延迟会带来残差。EKF 开启 `smooth_lagged_data` 并保留 2 秒历史，用于回放迟到观测；真实设备接入应直接使用经过同步的测量时间。
+
+`odom1` 仅开启 x/y，保持深度 z 来自压力计；不融合 USBL 姿态或速度。位置已经对应 base_link，`odom1_pose_use_child_frame=false` 避免重复补偿。采用非差分、非相对模式、队列长度 10、Mahalanobis 拒绝阈值 5。单 EKF 的绝对位置修正可能造成小幅位置变化。
+
+错误设备 ID、错误坐标系、非有限数值、无效量程、不一致的距离/位置、重复乱序及超过 2 秒的观测会被丢弃，并限频提示。声学断流时不补造观测，IMU/DVL/压力融合继续运行；ROS 时钟倒退会清空适配器的去重时间状态。
+
+```bash
+# 默认启用声学融合
+ros2 launch baseline_robot_bringup bringup_simulation.launch.py
+# 对照实验：不启动声学适配器，也不创建 EKF odom1 订阅
+ros2 launch baseline_robot_bringup bringup_simulation.launch.py use_usbl:=false
+# 验证声学原始数据、世界位置及 EKF 实际订阅
+ros2 topic echo /baseline_robot/stonefish/usbl/beacon_info --once
+ros2 topic echo /baseline_robot/usbl/odometry --once
+ros2 node info /baseline_robot/ekf_filter_node --no-daemon --spin-time 3
 ```
 
-量化结果：先按测量时间同步/插值，再把估计与真值统一到同一世界坐标、同一艇参考点；计算 `e_k = p_est(t_k) - p_truth(t_k)`，三维 `RMSE = sqrt(mean(ex² + ey² + ez²))`，另报水平 RMSE、最大误差、末端漂移。世界原点对齐应使用已知初始化关系；不要每组结果任意平移/旋转到最好看。
+声学设备在两种模式下都留在场景中，开关仅控制适配和融合，便于保持场景一致。改变基站位置或噪声时同时修改场景和 `usbl.yaml`，测试会核对两者。
+
+量化验证使用相同坐标和时间同步方法，并执行真实 EKF 的确定性对照：给两套滤波器相同 `(2,-1) m` 水平初始偏差，只有启用声学观测的一套收敛回原点；随后停止声学输入，确认输出继续。近零噪声基线本身已很准确，加入带噪 USBL 不保证其 RMSE 比原基线更低。
 
 ## 9. 推荐学习顺序与验收
 
@@ -418,6 +503,6 @@ odom2_queue_size: 10
 - **真实 GPS 水下无定位**：这是失锁表现；评估使用 `/baseline_robot/gps/ground_truth/*` 独立虚拟参考。
 - **转弯后真值轨迹与模型错开**：确认新 URDF 与场景的 DVL 安装位置一致，`base_link` 下应为 `(-0.55, 0, -0.1)`，不要通过平移真值轨迹掩盖杆臂错误。
 - **深度停止发布**：检查 IMU 数据和传感器静态 TF；压力数据最多等待 0.1 秒匹配姿态，缺少匹配时会跳过并提示。
-- **可选入口**：手柄、C2 和声学适配 launch 保留，默认不启用；启动 USBL 驱动不代表已经完成 USBL 定位或融合。
+- **USBL 没有位置输出**：先检查固定站 `beacon_info` 的实际发布、设备 ID 和 `usbl.yaml` 是否匹配，再检查适配器日志。默认已融合；`use_usbl:=false` 会关闭适配与 EKF 声学输入。手柄、C2 仍为可选入口。
 
 本项目不提供旧包名与旧话题兼容别名；上游作者与许可证信息保留在包声明及相关源文件中。

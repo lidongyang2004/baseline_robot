@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Display and record EKF output and virtual GPS truth.
+"""Display and record EKF output, acoustic fixes and virtual GPS truth.
 
 This node does not estimate position: robot_localization does that. CSV retains
 original frames and timestamps, including reference geodetic coordinates.
@@ -21,8 +21,8 @@ from sensor_msgs.msg import NavSatFix
 class NavigationPath(Node):
     """Record independent estimate/reference streams without changing their frames."""
 
-    def __init__(self):
-        super().__init__("navigation_path")
+    def __init__(self, **kwargs):
+        super().__init__("navigation_path", **kwargs)
         self.declare_parameter("csv_path", "")
         self.declare_parameter("max_poses", 6000)
         self.declare_parameter("sample_period", 0.2)
@@ -30,12 +30,13 @@ class NavigationPath(Node):
         self.period = float(self.get_parameter("sample_period").value)
         if maximum < 1 or self.period <= 0:
             raise ValueError("max_poses and sample_period must be positive")
-        self.poses = {key: deque(maxlen=maximum) for key in ("filtered", "truth")}
+        self.poses = {key: deque(maxlen=maximum) for key in ("filtered", "truth", "usbl")}
         self.frames = {}
         self.last_stamp = {}
         self.path_publishers = {
             "filtered": self.create_publisher(Path, "navigation/path", 10),
             "truth": self.create_publisher(Path, "navigation/truth_path", 10),
+            "usbl": self.create_publisher(Path, "navigation/usbl_path", 10),
         }
         filename = self.get_parameter("csv_path").value
         if not filename:
@@ -61,6 +62,10 @@ class NavigationPath(Node):
             self.create_subscription(
                 Odometry, "gps/ground_truth/odometry",
                 lambda msg: self.record("truth", msg), qos_profile_sensor_data,
+            ),
+            self.create_subscription(
+                Odometry, "usbl/odometry",
+                lambda msg: self.record("usbl", msg), qos_profile_sensor_data,
             ),
             self.create_subscription(
                 NavSatFix, "gps/ground_truth/fix", self.record_gps,
