@@ -1,0 +1,21 @@
+{
+  "rviz_command": [
+    "ros2",
+    "run",
+    "rviz2",
+    "rviz2",
+    "-d",
+    "/home/ubuntu2404_ros2/\u684c\u9762/baseline_robot/install/baseline_robot_description/share/baseline_robot_description/config/config.rviz"
+  ],
+  "mission_command": [
+    "/usr/bin/python3",
+    "/home/ubuntu2404_ros2/\u684c\u9762/baseline_robot/scripts/validate_particle_navigation.py",
+    "--output-dir",
+    "/home/ubuntu2404_ros2/\u684c\u9762/baseline_robot/results/2026-10-23-full-build-run-2201/survey",
+    "--domain-id",
+    "181"
+  ],
+  "mission_exit_code": 0,
+  "rviz_alive_at_mission_end": true,
+  "rviz_exit_code": 0
+}

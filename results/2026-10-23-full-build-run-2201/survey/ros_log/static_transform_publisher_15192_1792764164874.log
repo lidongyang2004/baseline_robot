@@ -1,0 +1,5 @@
+[INFO] [1792764164.896538953] [stonefish_world_ned]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'baseline_robot/world_ned' to 'world_ned'
+[INFO] [1792764321.927942568] [rclcpp]: signal_handler(SIGINT/SIGTERM)

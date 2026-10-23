@@ -1,0 +1,28 @@
+# Weng et al., JFR 2024 sec.3.2; fixed-station geometry adaptation.
+# These are engineering defaults, NOT parameters reported in the paper.
+/baseline_robot/pf_filter_node:
+  ros__parameters:
+    frequency: 20.0
+    particle_count: 2000
+    seed: 42
+    ess_ratio: 0.5
+    initial_xy: [0.0, 0.0]
+    initial_xy_std: 0.3
+    initial_yaw_std: 0.03
+    position_noise: 0.025
+    yaw_noise: 0.003
+    stale_position_noise: 0.3
+    stale_yaw_noise: 0.05
+    depth_noise: 0.005
+    sensor_timeout: 0.5
+    history_length: 2.0
+    k_range: 3.0
+    k_bearing: 3.0
+    odom_frame: baseline_robot/odom
+    base_frame: baseline_robot/base_link
+    publish_tf: true
+    cloud_frequency: 2.0
+    cloud_size: 300
+    attitude_wait: 0.15
+    # Station pose/noise/time budget are loaded from usbl.yaml, even when
+    # acoustic input is disabled. No duplicated calibration values here.

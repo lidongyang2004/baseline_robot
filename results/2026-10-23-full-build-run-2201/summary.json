@@ -1,0 +1,130 @@
+{
+  "date_local": "2026-10-23",
+  "timezone": "Asia/Shanghai",
+  "dependency_packages_built": 11,
+  "dependency_build_mode": "incremental, existing pinned source/cache reused",
+  "project_packages_built": 4,
+  "project_build_mode": "fresh project build/install, BUILD_TESTING=ON",
+  "python_tests": 74,
+  "test_suites": [
+    {
+      "suite": "navigation_sensors.xunit",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "particle_filter.xunit",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "particle_node.xunit",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "sensor_uncertainty.xunit",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "usbl.xunit",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "usbl_ekf.xunit",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "colcon_report": "80 tests, 0 errors, 0 failures, 0 skipped (includes six CTest wrappers)",
+  "mission": {
+    "use_usbl": true,
+    "status": "complete",
+    "odometry_publishers": [
+      "pf_filter_node"
+    ],
+    "mission_duration_sec": 126.877088383,
+    "final_state": "start",
+    "samples": 3037,
+    "output_hz": 19.93434895581132,
+    "reference_extents": {
+      "max_x": 19.98267885350431,
+      "max_y": 19.913109907721672
+    }
+  },
+  "metrics": {
+    "samples": 677,
+    "first_stamp": 1792764174.676115,
+    "last_stamp": 1792764321.779205,
+    "duration_sec": 147.103090123,
+    "horizontal_rmse_m": 0.044000542815394825,
+    "rmse_3d_m": 0.04722452512602696,
+    "max_horizontal_error_m": 0.11565782383084976,
+    "max_error_3d_m": 0.11591357875571232,
+    "final_horizontal_error_m": 0.04856838751230564,
+    "final_error_3d_m": 0.04879676192981722,
+    "final_error_xyz_m": [
+      -0.0349663328451868,
+      -0.03370821610386847,
+      0.004715475510462586
+    ],
+    "csv_path": "/home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory.csv",
+    "skipped_incomplete_rows": 0,
+    "profile": "usbl",
+    "acceptance_limits_m": {
+      "horizontal_rmse": 0.3,
+      "rmse_3d": 0.35,
+      "final_error_3d": 0.35
+    },
+    "passed": true,
+    "acceptance_checked": true,
+    "pf_acceptance_limits_m": {
+      "horizontal_rmse_m": 0.3,
+      "max_error_3d_m": 0.35,
+      "final_error_3d_m": 0.35
+    },
+    "pf_passed": true
+  },
+  "sensor_audit_passed": true,
+  "covariance_mismatches": 0,
+  "runtime": {
+    "rviz_command": [
+      "ros2",
+      "run",
+      "rviz2",
+      "rviz2",
+      "-d",
+      "/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_description/share/baseline_robot_description/config/config.rviz"
+    ],
+    "mission_command": [
+      "/usr/bin/python3",
+      "/home/ubuntu2404_ros2/桌面/baseline_robot/scripts/validate_particle_navigation.py",
+      "--output-dir",
+      "/home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey",
+      "--domain-id",
+      "181"
+    ],
+    "mission_exit_code": 0,
+    "rviz_alive_at_mission_end": true,
+    "rviz_exit_code": 0
+  },
+  "simulation_processes_cleanly_exited": 15,
+  "known_limitations": [
+    "Stonefish emitted two Failed to link program shader errors; mission completed."
+  ],
+  "source_changes": "No existing source or user modifications edited; generated build/install/log, restored .deps symlink, and added this results directory."
+}

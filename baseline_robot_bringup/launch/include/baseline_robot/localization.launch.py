@@ -1,4 +1,4 @@
-"""Fuse navigation sensors and optional USBL, using a known simulation origin."""
+"""Select the paper PF (default) or the original EKF, with one TF source."""
 
 import os
 import yaml
@@ -31,13 +31,32 @@ def start_ekf(context, config):
                  parameters=[ekf_parameters(config, enabled)])]
 
 
+def start_localization(context, config):
+    selected = LaunchConfiguration("localization_filter").perform(context)
+    if selected == "ekf":
+        return start_ekf(context, config)
+    if selected != "pf":
+        raise ValueError("localization_filter must be pf or ekf")
+    with open(os.path.join(config, "particle_filter.yaml"), encoding="utf-8") as source:
+        parameters = yaml.safe_load(source)["/baseline_robot/pf_filter_node"]["ros__parameters"]
+    with open(os.path.join(config, "usbl.yaml"), encoding="utf-8") as source:
+        station = yaml.safe_load(source)["/baseline_robot/usbl_adapter"]["ros__parameters"]
+    return [Node(package="baseline_robot_bringup", executable="particle_filter_node.py",
+                 namespace="baseline_robot", name="pf_filter_node", output="screen",
+                 parameters=[station, parameters, {
+                     "use_usbl": IfCondition(LaunchConfiguration("use_usbl")).evaluate(context),
+                 }])]
+
+
 def generate_launch_description():
     config = os.path.join(get_package_share_directory("baseline_robot_bringup"),
                           "config", "baseline_robot")
     return LaunchDescription([
+        DeclareLaunchArgument("localization_filter", default_value="pf", choices=["pf", "ekf"],
+                              description="Navigation estimator: paper PF or original EKF"),
         DeclareLaunchArgument("use_usbl", default_value="true",
-                              description="Fuse two-way USBL horizontal position"),
-        OpaqueFunction(function=start_ekf, args=[config]),
+                              description="Use raw USBL range/bearing for PF or converted position for EKF"),
+        OpaqueFunction(function=start_localization, args=[config]),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(os.path.dirname(__file__), "usbl.launch.py")),
             condition=IfCondition(LaunchConfiguration("use_usbl")),

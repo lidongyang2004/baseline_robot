@@ -1,0 +1,18 @@
+[INFO] [1792764169.908185682] [baseline_robot.mvp_control_ros_node]: Controller mode changed to idle
+[INFO] [1792764169.908314714] [baseline_robot.mvp_control_ros_node]: #### Control config file /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_control_config/baseline_robot/config.yaml loaded ####
+[INFO] [1792764169.908324802] [baseline_robot.mvp_control_ros_node]: #### Thruster initialized ####
+[INFO] [1792764169.908333431] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[WARN] [1792764169.919420360] [baseline_robot.mvp_control_ros_node]: Can't find TF between world and cg: "baseline_robot/world_ned" passed to lookupTransform argument target_frame does not exist. 
+[INFO] [1792764170.919600529] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[WARN] [1792764170.929938807] [baseline_robot.mvp_control_ros_node]: Can't find TF between world and cg: "baseline_robot/cg_link" passed to lookupTransform argument source_frame does not exist. 
+[INFO] [1792764171.930186691] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[INFO] [1792764171.930387563] [baseline_robot.mvp_control_ros_node]: initial world_link to child_link found
+[INFO] [1792764171.930425030] [baseline_robot.mvp_control_ros_node]: checking regular thrusters
+[INFO] [1792764171.930551849] [baseline_robot.mvp_control_ros_node]: checking vector thrusters
+[INFO] [1792764171.930607941] [baseline_robot.mvp_control_ros_node]: #### TF checking done ####
+[WARN] [1792764171.930962131] [baseline_robot.mvp_control_ros_node]: !!! No vector thruster specified !!!
+[INFO] [1792764171.931030272] [baseline_robot.mvp_control_ros_node]: #### Allocation matrix generated ####
+[INFO] [1792764182.966130174] [baseline_robot.mvp_control_ros_node]: Controller enabled.
+[INFO] [1792764182.985320529] [baseline_robot.mvp_control_ros_node]: Controller mode changed to 4dof
+[INFO] [1792764321.883888140] [baseline_robot.mvp_control_ros_node]: Controller disabled.
+[INFO] [1792764321.922807801] [rclcpp]: signal_handler(SIGINT/SIGTERM)

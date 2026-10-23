@@ -1,0 +1,2 @@
+[INFO] [1792764165.261488991] [baseline_robot.navigation_path]: Sensor values/covariances JSONL: /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory-sensors.jsonl
+[INFO] [1792764165.264131225] [baseline_robot.navigation_path]: Trajectory CSV: /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory.csv

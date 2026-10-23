@@ -1,0 +1,10 @@
+[INFO] Scenario file: /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/scenarios/single_auv.scn
+[INFO] [ROS] Replacing '$(find world_of_stonefish)/metadata/materials.scn' with '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/materials.scn'.
+[INFO] [ROS] Replacing '$(find world_of_stonefish)/metadata/looks.scn' with '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/looks.scn'.
+[INFO] [ROS] Replacing '$(find baseline_robot_bringup)/scenarios/baseline_robot.scn' with '/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/scenarios/baseline_robot.scn'.
+[INFO] Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/materials.scn'
+[INFO] Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/looks.scn'
+[INFO] Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/scenarios/baseline_robot.scn'
+[INFO] Ocean simulation enabled.
+[INFO] Using flat ocean surface.
+[INFO] Parsing finished normally.

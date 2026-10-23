@@ -20,9 +20,11 @@ def generate_launch_description():
         "mvp_control.launch.py",
         "mvp_mission.launch.py",
     )
-    actions = [DeclareLaunchArgument("use_usbl", default_value="true")]
+    actions = [DeclareLaunchArgument("use_usbl", default_value="true"),
+               DeclareLaunchArgument("localization_filter", default_value="pf", choices=["pf", "ekf"])]
     for filename in components:
-        arguments = {"use_usbl": LaunchConfiguration("use_usbl")} if filename == "localization.launch.py" else {}
+        arguments = {name: LaunchConfiguration(name) for name in ("use_usbl", "localization_filter")} \
+            if filename == "localization.launch.py" else {}
         actions.append(IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(launch_directory, filename)),
             launch_arguments=arguments.items(),

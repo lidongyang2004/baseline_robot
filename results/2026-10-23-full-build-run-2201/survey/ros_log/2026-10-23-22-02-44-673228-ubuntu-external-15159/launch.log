@@ -1,0 +1,70 @@
+1792764164.6740289 [INFO] [launch]: All log files can be found below /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/ros_log/2026-10-23-22-02-44-673228-ubuntu-external-15159
+1792764164.6741369 [INFO] [launch]: Default logging verbosity is set to INFO
+1792764164.8175271 [INFO] [stonefish_simulator-1]: process started with pid [15181]
+1792764164.8180842 [INFO] [imu_driver_node-2]: process started with pid [15182]
+1792764164.8184214 [INFO] [thruster_driver_node-3]: process started with pid [15183]
+1792764164.8187175 [INFO] [sensor_adapter.py-4]: process started with pid [15184]
+1792764164.8193023 [INFO] [usbl_driver_node-5]: process started with pid [15185]
+1792764164.8197143 [INFO] [particle_filter_node.py-6]: process started with pid [15186]
+1792764164.8200271 [INFO] [usbl_adapter.py-7]: process started with pid [15187]
+1792764164.8202908 [INFO] [static_transform_publisher-8]: process started with pid [15188]
+1792764164.8205829 [INFO] [gps_truth.py-9]: process started with pid [15189]
+1792764164.8208888 [INFO] [robot_state_publisher-10]: process started with pid [15190]
+1792764164.8211613 [INFO] [static_transform_publisher-11]: process started with pid [15191]
+1792764164.8214016 [INFO] [static_transform_publisher-12]: process started with pid [15192]
+1792764164.8216963 [INFO] [navigation_path.py-13]: process started with pid [15193]
+1792764164.8967957 [static_transform_publisher-12] [INFO] [1792764164.896538953] [stonefish_world_ned]: Spinning until stopped - publishing transform
+1792764164.8969545 [static_transform_publisher-12] translation: ('0.000000', '0.000000', '0.000000')
+1792764164.8970108 [static_transform_publisher-12] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1792764164.8970509 [static_transform_publisher-12] from 'baseline_robot/world_ned' to 'world_ned'
+1792764164.8982873 [robot_state_publisher-10] [INFO] [1792764164.898083485] [baseline_robot.robot_state_publisher]: Robot initialized
+1792764164.9045053 [static_transform_publisher-8] [INFO] [1792764164.904247517] [baseline_robot_world_odom]: Spinning until stopped - publishing transform
+1792764164.9046428 [static_transform_publisher-8] translation: ('0.000000', '0.000000', '0.000000')
+1792764164.9046988 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1792764164.9047422 [static_transform_publisher-8] from 'baseline_robot/world' to 'baseline_robot/odom'
+1792764164.9049492 [static_transform_publisher-11] [INFO] [1792764164.904247514] [baseline_robot_world_ned]: Spinning until stopped - publishing transform
+1792764164.9049981 [static_transform_publisher-11] translation: ('0.000000', '0.000000', '0.000000')
+1792764164.9050255 [static_transform_publisher-11] rotation: ('0.707107', '0.707107', '0.000000', '0.000000')
+1792764164.9050503 [static_transform_publisher-11] from 'baseline_robot/world' to 'baseline_robot/world_ned'
+1792764169.6999235 [sensor_adapter.py-4] [WARN] [1792764169.699562650] [baseline_robot.sensor_adapter]: Skipping invalid pressure measurement
+1792764169.8175619 [INFO] [stdbuf-14]: process started with pid [15644]
+1792764174.8331084 [INFO] [mvp_helm-15]: process started with pid [15733]
+1792764321.9121544 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1792764321.9207861 [INFO] [mvp_helm-15]: sending signal 'SIGINT' to process[mvp_helm-15]
+1792764321.9225848 [INFO] [stdbuf-14]: sending signal 'SIGINT' to process[stdbuf-14]
+1792764321.9250975 [INFO] [navigation_path.py-13]: sending signal 'SIGINT' to process[navigation_path.py-13]
+1792764321.9276469 [INFO] [static_transform_publisher-12]: sending signal 'SIGINT' to process[static_transform_publisher-12]
+1792764321.9329507 [INFO] [static_transform_publisher-11]: sending signal 'SIGINT' to process[static_transform_publisher-11]
+1792764321.9381406 [INFO] [robot_state_publisher-10]: sending signal 'SIGINT' to process[robot_state_publisher-10]
+1792764321.9432991 [INFO] [gps_truth.py-9]: sending signal 'SIGINT' to process[gps_truth.py-9]
+1792764321.9485028 [INFO] [static_transform_publisher-8]: sending signal 'SIGINT' to process[static_transform_publisher-8]
+1792764321.9540079 [INFO] [usbl_adapter.py-7]: sending signal 'SIGINT' to process[usbl_adapter.py-7]
+1792764321.9595723 [INFO] [particle_filter_node.py-6]: sending signal 'SIGINT' to process[particle_filter_node.py-6]
+1792764321.9640958 [INFO] [usbl_driver_node-5]: sending signal 'SIGINT' to process[usbl_driver_node-5]
+1792764321.9686489 [INFO] [sensor_adapter.py-4]: sending signal 'SIGINT' to process[sensor_adapter.py-4]
+1792764321.9727774 [INFO] [thruster_driver_node-3]: sending signal 'SIGINT' to process[thruster_driver_node-3]
+1792764321.9769900 [INFO] [imu_driver_node-2]: sending signal 'SIGINT' to process[imu_driver_node-2]
+1792764321.9808018 [INFO] [stonefish_simulator-1]: sending signal 'SIGINT' to process[stonefish_simulator-1]
+1792764321.9829919 [static_transform_publisher-12] [INFO] [1792764321.927942568] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9835112 [static_transform_publisher-11] [INFO] [1792764321.933725537] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9840305 [robot_state_publisher-10] [INFO] [1792764321.938696875] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9845376 [static_transform_publisher-8] [INFO] [1792764321.950169529] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9850590 [usbl_driver_node-5] [INFO] [1792764321.964910388] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9855831 [thruster_driver_node-3] [INFO] [1792764321.973516292] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764321.9860933 [imu_driver_node-2] [INFO] [1792764321.977482110] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1792764322.0737777 [INFO] [static_transform_publisher-12]: process has finished cleanly [pid 15192]
+1792764322.0746913 [INFO] [static_transform_publisher-11]: process has finished cleanly [pid 15191]
+1792764322.0809608 [INFO] [robot_state_publisher-10]: process has finished cleanly [pid 15190]
+1792764322.0889733 [INFO] [static_transform_publisher-8]: process has finished cleanly [pid 15188]
+1792764322.0954359 [INFO] [stdbuf-14]: process has finished cleanly [pid 15644]
+1792764322.0967031 [INFO] [usbl_driver_node-5]: process has finished cleanly [pid 15185]
+1792764322.0971088 [usbl_driver_node-5] usbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data gotusbl_data got
+1792764322.0975583 [INFO] [thruster_driver_node-3]: process has finished cleanly [pid 15183]
+1792764322.0980260 [INFO] [imu_driver_node-2]: process has finished cleanly [pid 15182]
+1792764322.0996182 [INFO] [mvp_helm-15]: process has finished cleanly [pid 15733]
+1792764322.1724789 [INFO] [usbl_adapter.py-7]: process has finished cleanly [pid 15187]
+1792764322.1758463 [INFO] [gps_truth.py-9]: process has finished cleanly [pid 15189]
+1792764322.1798975 [INFO] [navigation_path.py-13]: process has finished cleanly [pid 15193]
+1792764322.1813252 [INFO] [stonefish_simulator-1]: process has finished cleanly [pid 15181]
+1792764322.1912119 [INFO] [particle_filter_node.py-6]: process has finished cleanly [pid 15186]
+1792764322.1940029 [INFO] [sensor_adapter.py-4]: process has finished cleanly [pid 15184]

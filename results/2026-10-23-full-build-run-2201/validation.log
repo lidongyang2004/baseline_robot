@@ -1,0 +1,44 @@
+args.use_usbl='true' elapsed=0.1s state=survey position=(-0.01,-0.10,-1.06)
+args.use_usbl='true' elapsed=15.2s state=survey position=(0.07,7.68,-1.83)
+args.use_usbl='true' elapsed=30.2s state=survey position=(0.01,17.26,-2.47)
+args.use_usbl='true' elapsed=45.3s state=survey position=(6.10,19.57,-2.42)
+args.use_usbl='true' elapsed=60.4s state=survey position=(15.71,19.86,-2.69)
+args.use_usbl='true' elapsed=75.4s state=survey position=(19.28,15.25,-2.79)
+args.use_usbl='true' elapsed=90.4s state=survey position=(19.90,5.77,-2.84)
+args.use_usbl='true' elapsed=105.4s state=survey position=(16.51,0.90,-2.99)
+args.use_usbl='true' elapsed=120.5s state=survey position=(7.21,0.14,-2.97)
+args.use_usbl='true' elapsed=135.6s state=start position=(-1.09,0.02,-2.32)
+{
+  "samples": 677,
+  "first_stamp": 1792764174.676115,
+  "last_stamp": 1792764321.779205,
+  "duration_sec": 147.103090123,
+  "horizontal_rmse_m": 0.044000542815394825,
+  "rmse_3d_m": 0.04722452512602696,
+  "max_horizontal_error_m": 0.11565782383084976,
+  "max_error_3d_m": 0.11591357875571232,
+  "final_horizontal_error_m": 0.04856838751230564,
+  "final_error_3d_m": 0.04879676192981722,
+  "final_error_xyz_m": [
+    -0.0349663328451868,
+    -0.03370821610386847,
+    0.004715475510462586
+  ],
+  "csv_path": "/home/ubuntu2404_ros2/\u684c\u9762/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory.csv",
+  "skipped_incomplete_rows": 0,
+  "profile": "usbl",
+  "acceptance_limits_m": {
+    "horizontal_rmse": 0.3,
+    "rmse_3d": 0.35,
+    "final_error_3d": 0.35
+  },
+  "passed": true,
+  "acceptance_checked": true,
+  "pf_acceptance_limits_m": {
+    "horizontal_rmse_m": 0.3,
+    "max_error_3d_m": 0.35,
+    "final_error_3d_m": 0.35
+  },
+  "pf_passed": true
+}
+

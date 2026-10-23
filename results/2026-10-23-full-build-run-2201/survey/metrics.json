@@ -1,0 +1,33 @@
+{
+  "samples": 677,
+  "first_stamp": 1792764174.676115,
+  "last_stamp": 1792764321.779205,
+  "duration_sec": 147.103090123,
+  "horizontal_rmse_m": 0.044000542815394825,
+  "rmse_3d_m": 0.04722452512602696,
+  "max_horizontal_error_m": 0.11565782383084976,
+  "max_error_3d_m": 0.11591357875571232,
+  "final_horizontal_error_m": 0.04856838751230564,
+  "final_error_3d_m": 0.04879676192981722,
+  "final_error_xyz_m": [
+    -0.0349663328451868,
+    -0.03370821610386847,
+    0.004715475510462586
+  ],
+  "csv_path": "/home/ubuntu2404_ros2/\u684c\u9762/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory.csv",
+  "skipped_incomplete_rows": 0,
+  "profile": "usbl",
+  "acceptance_limits_m": {
+    "horizontal_rmse": 0.3,
+    "rmse_3d": 0.35,
+    "final_error_3d": 0.35
+  },
+  "passed": true,
+  "acceptance_checked": true,
+  "pf_acceptance_limits_m": {
+    "horizontal_rmse_m": 0.3,
+    "max_error_3d_m": 0.35,
+    "final_error_3d_m": 0.35
+  },
+  "pf_passed": true
+}

@@ -1,0 +1,122 @@
+{
+  "samples": 637,
+  "alignment": "ground truth interpolated to each filtered timestamp; P used at its own timestamp",
+  "coverage_2sigma": {
+    "x": 1.0,
+    "y": 1.0,
+    "z": 0.9544740973312402
+  },
+  "mean_sigma_m": {
+    "x": 0.05779430210768312,
+    "y": 0.0568015368750875,
+    "z": 0.02092003476922053
+  },
+  "note": "Marginal coverage is reported, not a claim of calibrated covariance or joint 95% coverage.",
+  "sensor_audit": {
+    "noise_models": {
+      "distribution": "independent zero-mean Gaussian before nonlinear transforms and clipping",
+      "error_mean": 0.0,
+      "imu": {
+        "orientation_stddev_rad": [
+          0.005,
+          0.005,
+          0.01
+        ],
+        "angular_velocity_stddev_rad_s": [
+          0.002,
+          0.002,
+          0.002
+        ],
+        "linear_acceleration_stddev_m_s2": [
+          0.03,
+          0.03,
+          0.03
+        ],
+        "yaw_drift_rad_s": 0.0
+      },
+      "dvl": {
+        "velocity_stddev_m_s": 0.02,
+        "altitude_stddev_m": 0.03,
+        "velocity_percent": 0.0
+      },
+      "pressure": {
+        "stddev_pa": 200.0
+      },
+      "gps": {
+        "horizontal_stddev_m": 1.5,
+        "altitude_supported": false,
+        "underwater_fix_supported": false
+      },
+      "usbl": {
+        "range_stddev_m": 0.05,
+        "azimuth_stddev_rad": 0.003490658503988659,
+        "elevation_stddev_rad": 0.008726646259971648,
+        "range_resolution_m": 0.0,
+        "angle_resolution_deg": 0.0,
+        "additional_position_variance_m2": 0.01
+      },
+      "reference": "ideal Stonefish Base ground truth; not a physical sensor; not fused"
+    },
+    "counts": {
+      "imu_raw": {
+        "total": 3024,
+        "valid": 3024,
+        "invalid": 0
+      },
+      "truth_raw": {
+        "total": 3023,
+        "valid": 3023,
+        "invalid": 0
+      },
+      "imu": {
+        "total": 3021,
+        "valid": 3021,
+        "invalid": 0
+      },
+      "pressure": {
+        "total": 760,
+        "valid": 757,
+        "invalid": 3
+      },
+      "dvl_raw": {
+        "total": 760,
+        "valid": 760,
+        "invalid": 0
+      },
+      "dvl": {
+        "total": 760,
+        "valid": 760,
+        "invalid": 0
+      },
+      "dvl_altitude": {
+        "total": 760,
+        "valid": 760,
+        "invalid": 0
+      },
+      "depth": {
+        "total": 756,
+        "valid": 756,
+        "invalid": 0
+      },
+      "gps": {
+        "total": 152,
+        "valid": 1,
+        "invalid": 151
+      },
+      "usbl_raw": {
+        "total": 152,
+        "valid": 152,
+        "invalid": 0
+      },
+      "usbl": {
+        "total": 152,
+        "valid": 152,
+        "invalid": 0
+      }
+    },
+    "covariance_mismatches": 0,
+    "mismatch_examples": [],
+    "missing_sources": [],
+    "passed": true
+  }
+}

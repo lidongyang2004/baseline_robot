@@ -1,41 +1,64 @@
 # baseline_robot：从零开始的单 AUV 轨迹控制与组合导航
 
-基于 **ROS 2 Jazzy、Stonefish 和 RViz** 的单 AUV 导航仿真项目。本文已整合原《从零开始_单AUV组合导航.md》，编译、运行、结果和学习说明统一保存在本 README。
+基于 **ROS 2 Jazzy、Stonefish 和 RViz** 的单 AUV 导航仿真项目。本文已将编译、运行、结果和学习说明统一保存在本 README。
 
-当前只运行一艘 `baseline_robot`：**EKF 融合 IMU、DVL、深度和双程 USBL 水平位置，虚拟 GPS 仅作独立真值参考**，不参与融合或 world/odom 初始化。项目支持 20 m × 20 m 矩形航点、3 m 目标深度、0.8 m/s 目标航速，提供 RViz 估计/真值轨迹、CSV 保存和时间同步误差评估。
+当前只运行一艘 `baseline_robot`：**默认使用论文结构的 `[x,y,yaw]` 粒子滤波（PF），DVL／陀螺预测、固定 USBL 距离／方位校正；深度单独处理，roll/pitch 来自 IMU。虚拟 GPS 仅作独立真值参考**，不参与融合或 world/odom 初始化。项目支持 20 m × 20 m 矩形航点、3 m 目标深度、0.8 m/s 目标航速，提供 RViz 估计/真值轨迹、CSV 保存和时间同步误差评估。
 
-已加入已知位置的固定 USBL 和艇上应答器，通过原生 PING/ACK 完成双程测距，距离与角度转换为 ENU 水平位置后融合。默认启用，可用 `use_usbl:=false` 关闭。当前 EKF 是通用融合基线，尚不是带传感器偏置等完整模型的捷联惯导 ESKF。虚拟 GPS 由 Stonefish 独立真实位置生成，在水下仍可作为仿真参考，**不能当作实际水下 GPS**。
+已知位置的固定 USBL 和艇上应答器通过原生 PING/ACK 完成双程测距。默认启用，可用 `use_usbl:=false` 关闭。使用 `localization_filter:=ekf` 可切回原通用 EKF；该 EKF 不是完整的捷联惯导 ESKF。虚拟 GPS 由 Stonefish 独立真实位置生成，在水下仍可作为仿真参考，**不能当作实际水下 GPS**。
 
-## RViz 与仿真机器人实际界面（2026-10-22 重跑）
+## 当前默认 PF（2026-10-23）
 
-使用当前全传感器高斯噪声配置重新启动了 Stonefish、RViz、EKF 和任务节点，完成全部四个矩形航点，约 **128.1 秒**后自动返回 `start`。本节三张图片是同一次界面演示运行的真实程序窗口截图；演示数据单独保存在 [results/2026-10-22-gaussian-ui-render](results/2026-10-22-gaussian-ui-render/mission.json)，下方定量验收仍对应原来的 `2026-10-22-gaussian` 实验。
-
-**RViz 完整航线**：`Global Status: Ok`，固定坐标系为 `baseline_robot/odom`；绿色为 EKF 融合轨迹，橙色为独立真值，紫色为 USBL 声学位置连线。左侧已启用 AUV、TF 和三条 Path。总览视距调整为 43 m、网格扩展至 30 格，完整矩形可以同时显示；估计与真值接近时会重叠。
-
-![当前高斯噪声与 USBL 融合下的 RViz 完整航线实际界面](assets/rviz-navigation-gaussian.png)
-
-**Stonefish 机器人外形**：当前黄色 AUV 的艇身、顶部突出结构和尾部导管推进器。`Trackball center` 选择 `baseline_robot` 后，相机跟随艇；滚轮缩放、拖动旋转视角。截图时隐藏了悬浮颗粒，便于观察外形，模型和物理参数保持不变。
-
-![Stonefish 当前黄色 AUV 外形与尾部推进器的真实运行画面](assets/stonefish-robot-gaussian.png)
-
-**RViz 模型近景**：同一艘艇的当前 URDF/STL 渲染，图中为红色，Stonefish 场景中为黄色。近景视图跟随 `baseline_robot/base_link`，临时隐藏网格、TF 和轨迹以展示外形；完整航线总览仍保留这些显示。
-
-![RViz 当前机器人 URDF 模型的实际近景界面](assets/rviz-robot-gaussian.png)
-
-本机 Wayland 桌面直接抓取窗口会返回黑图，因此本次在独立 X11 显示中实际运行程序并截取其窗口内容，使用 Mesa 软件渲染。图中 FPS 是该渲染环境的显示帧率，传感器频率见任务记录。图片保留原始窗口内容；[截图时间、窗口和 SHA-256](results/2026-10-22-gaussian-ui-render/screenshots.jsonl)、[截图脚本](results/2026-10-22-gaussian-ui-render/capture_ui.py)、[模型近景视图配置](results/2026-10-22-gaussian-ui-render/rviz-model.rviz)、[完整航线视图配置](baseline_robot_description/config/config.rviz)、[启动与退出日志](results/2026-10-22-gaussian-ui-render/launch.log)、[任务日志](results/2026-10-22-gaussian-ui-render/mission.log)均已保留。
-
-日常在桌面打开同样界面：
+依据 Weng et al. (2024), [JFR, DOI: 10.1002/rob.22348](https://doi.org/10.1002/rob.22348) 第 3.2 节改造组合导航。**只迁移导航结构，不包含论文的 SAC 或光链路对准控制**。本项目采用固定基站，方位测量不显式包含艇体航向；该几何差异已在模型中处理。
 
 ```bash
 source scripts/env.sh
-ros2 launch baseline_robot_bringup bringup_simulation.launch.py use_usbl:=true rviz:=true
+colcon build --packages-select baseline_robot_bringup --symlink-install
+source scripts/env.sh
+ros2 launch baseline_robot_bringup bringup_simulation.launch.py
+# EKF 对照：在启动命令后添加 localization_filter:=ekf
+# 关闭声学：在启动命令后添加 use_usbl:=false
 ```
 
-执行航点任务的方法见第 4 节。查看机器人近景时，可在 RViz 的 `Views` 中将 `Target Frame` 改为 `baseline_robot/base_link`、`Distance` 设为约 4.5 m；查看完整航线时使用默认总览配置。
+默认 2,000 粒子、20 Hz 输出、2 秒历史回放；保留 `odometry/filtered` 和 `odom -> base_link` 接口。RViz 可添加 PoseArray `/baseline_robot/navigation/particles`；诊断位于 `/baseline_robot/navigation/pf_diagnostics`。
 
-## 全传感器高斯不确定度实测（2026-10-22）
+参数、论文公式对应关系、深度与协方差近似、固定站适配和复跑方法见 [PF 导航说明](docs/particle_filter_navigation.md)。**下文所有 2026-10-22 的截图、精度、噪声验收与结果均属于原 EKF 历史运行，不能当作 PF 的实验结果。**
 
-当前 IMU、DVL、压力、实体 GPS 和 USBL 均配置了非零测量噪声，有效测量同时携带数值和协方差。已执行全部四个矩形航点，日志确认 `Done with all waypoints`，约 **128.3 秒**后返回 `start`，继续观测 12 秒后关闭控制器，所有仿真节点正常退出。**49 项 pytest 全部通过**，构建和 CTest 检查通过。
+已完成 74 项 Python 测试及含/不含 USBL 的完整矩形航线。最终含 USBL 运行约 127.5 秒完成全部航点，水平 RMSE **0.04450 m**、最大三维误差 **0.12324 m**、末端三维误差 **0.04198 m**，三项验收通过，所有节点正常退出；关闭 USBL 的独立运行水平 RMSE **0.13858 m**。两组实际输出均约 20 Hz。[指标、耗时和验证边界](docs/particle_filter_navigation.md#2026-10-23-实际验证记录)及[原始验证汇总](results/2026-10-23-paper-pf-validation/validation_summary.json)已保存。
+
+![PF 含/不含 USBL 的实际航线与误差](results/2026-10-23-paper-pf-validation/comparison-final.png)
+
+## 全部图片重新生成（2026-10-22 21:11 重跑）
+
+已删除 `assets/` 中原有的全部图片，并用本次运行重新生成 **7 张图片**：RViz 完整航线、Stonefish 机器人外形、RViz 模型近景、二维轨迹、三维轨迹、误差与 ±2σ、配置噪声分布。前三张是实际窗口截图；轨迹和误差图使用同一运行的数据，噪声分布图明确展示配置模型。完整记录保存在 [results/2026-10-22-refresh-211112](results/2026-10-22-refresh-211112/mission.json)。
+
+本次保持传感器噪声、单 EKF 输入与过程噪声 Q 不变，完成全部四个矩形航点，约 **127.6 秒**后返回 `start`，继续观测 12 秒后关闭控制器并正常退出。
+
+**RViz 完整航线**：`Global Status: Ok`，绿色为融合估计，橙色为独立真值，紫色为 USBL 声学位置连线；左侧开启 AUV、TF 和三条 Path。总览视距为 43 m，固定坐标系是 `baseline_robot/odom`。
+
+![本次重新运行的 RViz 完整矩形航线](assets/rviz-navigation.png)
+
+**Stonefish 机器人外形**：新拍摄的黄色 AUV、艇身及尾部导管推进器。`Trackball center` 选择 `baseline_robot`；滚轮缩放、拖动旋转。截图时隐藏悬浮颗粒以看清外形。
+
+![本次新拍摄的 Stonefish 黄色 AUV 与尾部推进器](assets/stonefish-running.png)
+
+**RViz 模型近景**：当前 URDF/STL 的红色渲染；视图跟随 `baseline_robot/base_link`，视距 3 m，临时隐藏其他显示以观察模型。
+
+![本次新拍摄的 RViz 机器人模型近景](assets/rviz-robot.png)
+
+三张截图在独立 X11 显示中实际运行程序后取得，使用 Mesa 软件渲染；图中 FPS 是显示帧率，传感器频率见任务记录。[截图来源与时间](results/2026-10-22-refresh-211112/screenshots.jsonl)、[截图脚本](results/2026-10-22-refresh-211112/capture_ui.py)、[近景配置](results/2026-10-22-refresh-211112/rviz-model.rviz)、[启动与退出日志](results/2026-10-22-refresh-211112/launch.log)均已保存。全部新 PNG 的同份原始文件还保存在本次结果目录的 `images/` 中。
+
+日常打开同样界面：
+
+```bash
+source scripts/env.sh
+ros2 launch baseline_robot_bringup bringup_simulation.launch.py localization_filter:=ekf use_usbl:=true rviz:=true
+```
+
+执行完整航点任务的方法见第 4 节。查看近景时在 RViz 的 `Views` 中将 `Target Frame` 改为 `baseline_robot/base_link`、`Distance` 设为约 3 m；查看全航线时使用默认总览配置。
+
+## 本次完整航线与不确定度实测（2026-10-22 21:11）
+
+当前 IMU、DVL、压力、实体 GPS 和 USBL 均配置了非零测量噪声，有效测量同时携带数值和协方差。已执行全部四个矩形航点，日志确认 `Done with all waypoints`，约 **127.6 秒**后返回 `start`，继续观测 12 秒后关闭控制器，所有仿真节点正常退出。本次重新验证完整航线与测量方差，沿用已有通过回归的代码。
 
 下图使用本次实际运行的数据：绿色是融合估计，橙色是独立真值，紫色是实际 USBL 观测，浅绿色是每 8 秒抽样的 **1σ 位置椭圆**。椭圆使用 EKF 的完整水平位置协方差，未放大；二维 1σ 椭圆并非 68% 或 95% 的联合置信区域。USBL 仅将 x/y 加入 EKF，z 散点仅展示，融合深度仍由压力计约束。
 
@@ -45,25 +68,25 @@ ros2 launch baseline_robot_bringup bringup_simulation.launch.py use_usbl:=true r
 
 ![同次运行的三维融合轨迹、独立真值与实际声学观测](assets/usbl-trajectory-3d.png)
 
-统计窗口为 **survey 开始至任务完成后 12 秒**。649 个真值时间戳用于 RMSE：将估计线性插值到真值时间，不做事后平移或旋转对齐。窗口包含 **140 个声学观测**。
+统计窗口为 **survey 开始至任务完成后 12 秒**。612 个真值时间戳用于 RMSE：将估计线性插值到真值时间，不做事后平移或旋转对齐。窗口包含 **140 个声学观测**。
 
 | 指标 | 本次实测 | 预设验收阈值 |
 |---|---:|---:|
-| 水平 RMSE | 0.093987 m | < 0.30 m |
-| 三维 RMSE | 0.095701 m | < 0.35 m |
-| 最大三维误差 | 0.246200 m | 记录值 |
-| 末端三维误差 | 0.050594 m | < 0.35 m |
+| 水平 RMSE | 0.082387 m | < 0.30 m |
+| 三维 RMSE | 0.084692 m | < 0.35 m |
+| 最大三维误差 | 0.232303 m | 记录值 |
+| 末端三维误差 | 0.069466 m | < 0.35 m |
 | 三项阈值检查 | **全部通过** | `--profile usbl --check` 返回 0 |
 
-误差与不确定度图使用另外 **624 个估计时间戳**：将独立真值插值到估计时刻，并使用该时刻原始报告的 `P`，不插值协方差。两种统计的时间窗相同，采样时刻不同。
+误差与不确定度图使用另外 **610 个估计时间戳**：将独立真值插值到估计时刻，并使用该时刻原始报告的 `P`，不插值协方差。两种统计的时间窗相同，采样时刻不同。
 
 ![x、y、z 实际误差和 EKF 报告的 ±2σ 范围](assets/position-uncertainty.png)
 
 | 轴 | 实际 ±2σ 覆盖率 | 平均报告 σ |
 |---|---:|---:|
-| x / 东 | 100.0% | 0.24685 m |
-| y / 北 | 100.0% | 0.24456 m |
-| z / 上 | 100.0% | 0.11891 m |
+| x / 东 | 100.0% | 0.24677 m |
+| y / 北 | 100.0% | 0.24455 m |
+| z / 上 | 100.0% | 0.11168 m |
 
 **这些覆盖率不表示不确定度已经校准。** 本次报告区间相对实际误差偏宽；保留的通用过程噪声 Q、预测与测量更新周期、额外声学位置预算都会影响 P，图中的锯齿反映了这些更新。这里只报告单次运行的各轴边际覆盖率，不把它解释为联合 95% 覆盖率。参数属于仿真示例，尚无固定偏置、随机漂移或海流模型。
 
@@ -101,35 +124,36 @@ z_t=h(x_t)+\epsilon_t,\qquad \epsilon_t\sim\mathcal N(0,R),\qquad R=\operatornam
 
 CSV 保持原有列顺序，末尾追加 `cov_xx,cov_xy,cov_xz,cov_yy,cov_yz,cov_zz`，单位 m²；旧 CSV 仍可计算原定位指标。自动生成同名 `-sensors.jsonl`，首行保存模型，后续保留原始消息、协方差、时间戳和有效性标记。USBL 原消息没有协方差字段，JSONL 额外保存距离/水平角/垂直角的原始方差，转换后位置另有完整协方差。DVL 新增 `/baseline_robot/dvl/altitude_with_covariance`，保留原高度话题，详见第 7 节。
 
-本次核对了整份 JSONL：全部有效 IMU、DVL、压力和实体 GPS 水平方差与配置一致，深度及 USBL 的传播方差为有限正数，**方差不匹配数为 0**。共记录 222 条实体 GPS，其中 169 条失锁并标为无效，均未参与融合。零方差/未知方差、非有限、失锁及 DVL/压力裁剪边界均有拒绝或有效性检查；本次没有遇到 DVL 或压力裁剪样本。
+本次核对了整份 JSONL：全部有效 IMU、DVL、压力和实体 GPS 水平方差与配置一致，深度及 USBL 的传播方差为有限正数，**方差不匹配数为 0**。共记录 199 条实体 GPS，其中 175 条失锁并标为无效，均未参与融合。零方差/未知方差、非有限、失锁及 DVL/压力裁剪边界均有拒绝或有效性检查；本次没有遇到 DVL 或压力裁剪样本。
 
-- [本次轨迹与协方差 CSV](results/2026-10-22-gaussian/trajectory.csv)、[完整传感器 JSONL](results/2026-10-22-gaussian/trajectory-sensors.jsonl)。
-- [定位指标](results/2026-10-22-gaussian/metrics.json)、[覆盖率与逐传感器方差核对](results/2026-10-22-gaussian/uncertainty.json)、[任务与频率](results/2026-10-22-gaussian/mission.json)、[绘图窗口与数量](results/2026-10-22-gaussian/recording.json)。
-- [EKF 实际订阅](results/2026-10-22-gaussian/ekf-node.txt)、[启动及退出日志](results/2026-10-22-gaussian/launch.log)、[四航点任务日志](results/2026-10-22-gaussian/mission.log)。
-- [构建日志](results/2026-10-22-gaussian/build.log)、[49 项 pytest 日志](results/2026-10-22-gaussian/test.log)、[CTest 汇总](results/2026-10-22-gaussian/test-result.log)。
-- [本次配置快照](results/2026-10-22-gaussian/configuration/scenarios/baseline_robot.scn)、[声学场景快照](results/2026-10-22-gaussian/configuration/scenarios/single_auv.scn)、[EKF 配置快照](results/2026-10-22-gaussian/configuration/config/baseline_robot/localization.yaml)、[文件校验与退出检查](results/2026-10-22-gaussian/verification.json)。
-- [二维 SVG](results/2026-10-22-gaussian/navigation-results.svg)、[三维 SVG](results/2026-10-22-gaussian/usbl-trajectory-3d.svg)、[误差与 ±2σ SVG](results/2026-10-22-gaussian/position-uncertainty.svg)、[配置分布 SVG](results/2026-10-22-gaussian/sensor-noise-models.svg)。
+- [本次轨迹与协方差 CSV](results/2026-10-22-refresh-211112/trajectory.csv)、[完整传感器 JSONL](results/2026-10-22-refresh-211112/trajectory-sensors.jsonl)。
+- [定位指标](results/2026-10-22-refresh-211112/metrics.json)、[覆盖率与逐传感器方差核对](results/2026-10-22-refresh-211112/uncertainty.json)、[任务与频率](results/2026-10-22-refresh-211112/mission.json)、[绘图窗口与数量](results/2026-10-22-refresh-211112/recording.json)。
+- [EKF 实际订阅](results/2026-10-22-refresh-211112/ekf-node.txt)、[启动及退出日志](results/2026-10-22-refresh-211112/launch.log)、[四航点任务日志](results/2026-10-22-refresh-211112/mission.log)。
+- [既有 49 项 pytest 记录](results/2026-10-22-gaussian/test.log)、[既有构建记录](results/2026-10-22-gaussian/build.log)、[既有 CTest 汇总](results/2026-10-22-gaussian/test-result.log)。
+- [本次配置快照](results/2026-10-22-refresh-211112/configuration/scenarios/baseline_robot.scn)、[声学场景快照](results/2026-10-22-refresh-211112/configuration/scenarios/single_auv.scn)、[EKF 配置快照](results/2026-10-22-refresh-211112/configuration/config/baseline_robot/localization.yaml)、[文件校验与退出检查](results/2026-10-22-refresh-211112/verification.json)。
+- [二维 SVG](results/2026-10-22-refresh-211112/navigation-results.svg)、[三维 SVG](results/2026-10-22-refresh-211112/usbl-trajectory-3d.svg)、[误差与 ±2σ SVG](results/2026-10-22-refresh-211112/position-uncertainty.svg)、[配置分布 SVG](results/2026-10-22-refresh-211112/sensor-noise-models.svg)。
 
-复算同一时间窗并重画四张图片（绘图需要 `matplotlib`、`numpy`、`fontconfig` 和 Noto CJK 字体）：
+复算同一时间窗并重画四张结果图，再同步本次七张图片（绘图需要 `matplotlib`、`numpy`、`fontconfig` 和 Noto CJK 字体）：
 
 ```bash
 source scripts/env.sh
 ros2 run baseline_robot_bringup evaluate_navigation.py \
-  results/2026-10-22-gaussian/trajectory.csv --profile usbl --check \
-  --start-time 1792670186.515227 --end-time 1792670326.8094375 \
-  --json results/2026-10-22-gaussian/metrics.json
+  results/2026-10-22-refresh-211112/trajectory.csv --profile usbl --check \
+  --start-time 1792674716.7931979 --end-time 1792674856.44436 \
+  --json results/2026-10-22-refresh-211112/metrics.json
 ros2 run baseline_robot_bringup evaluate_uncertainty.py \
-  results/2026-10-22-gaussian/trajectory.csv --check \
-  --start-time 1792670186.515227 --end-time 1792670326.8094375 \
-  --json results/2026-10-22-gaussian/uncertainty.json
-python3 results/2026-10-22-gaussian/plot_results.py
+  results/2026-10-22-refresh-211112/trajectory.csv --check \
+  --start-time 1792674716.7931979 --end-time 1792674856.44436 \
+  --json results/2026-10-22-refresh-211112/uncertainty.json
+python3 results/2026-10-22-refresh-211112/plot_results.py
+cp results/2026-10-22-refresh-211112/images/*.png assets/
 ```
 
-本次使用隔离的 `ROS_DOMAIN_ID=91`，`rviz:=false`；结果图由运行数据绘制。Stonefish 海面着色器仍报告 `Failed to link program!`，未阻止传感器或完整任务。重新运行时，两终端加载相同环境并使用相同 domain。终端 A：
+本次使用隔离的 `ROS_DOMAIN_ID=95`，`rviz:=true`；结果图由运行数据绘制。Stonefish 海面着色器仍报告 `Failed to link program!`，未阻止传感器或完整任务。重新运行时，两终端加载相同环境并使用相同 domain。终端 A：
 
 ```bash
 source scripts/env.sh
-export ROS_DOMAIN_ID=91
+export ROS_DOMAIN_ID=95
 ros2 launch baseline_robot_bringup bringup_simulation.launch.py \
   use_usbl:=true rviz:=true csv_path:=/tmp/baseline_gaussian_trial_02/trajectory.csv
 ```
@@ -138,11 +162,18 @@ ros2 launch baseline_robot_bringup bringup_simulation.launch.py \
 
 ```bash
 source scripts/env.sh
-export ROS_DOMAIN_ID=91
+export ROS_DOMAIN_ID=95
 python3 results/2026-10-22/run_survey.py --output-dir /tmp/baseline_gaussian_trial_02
 ```
 
 CSV 和任务结果使用尚未存在的新文件名，避免覆盖已有实验。任务脚本结束后，在终端 A 按 Ctrl+C 正常退出仿真。日常使用可保留默认 domain。更改测量噪声后重新编译并启动，随机噪声下每次轨迹和指标会有差异。
+
+<details>
+<summary>本次刷新前的高斯噪声与界面运行记录（历史参考）</summary>
+
+上一轮高斯实验的水平 RMSE 为 0.093987 m，数据保留在 [轨迹 CSV](results/2026-10-22-gaussian/trajectory.csv)、[指标](results/2026-10-22-gaussian/metrics.json)、[不确定度统计](results/2026-10-22-gaussian/uncertainty.json)、[二维 SVG](results/2026-10-22-gaussian/navigation-results.svg) 和 [三维 SVG](results/2026-10-22-gaussian/usbl-trajectory-3d.svg)。此前界面演示的 [任务记录](results/2026-10-22-gaussian-ui-render/mission.json) 和 [日志](results/2026-10-22-gaussian-ui-render/launch.log) 也保留为历史参考。旧的 `assets/` 图片已全部移除；历史绘图脚本现在只写入自己的实验目录。
+
+</details>
 
 <details>
 <summary>全传感器噪声更新前的 USBL 实验（历史参考）</summary>
@@ -156,11 +187,11 @@ CSV 和任务结果使用尚未存在的新文件名，避免覆盖已有实验�
 </details>
 
 <details>
-<summary>接入前的基线结果和旧界面截图（历史参考）</summary>
+<summary>接入前的基线数据（历史参考）</summary>
 
 **USBL 接入前的基线结果（2026-10-22）**
 
-本节数据和截图保留自 IMU/DVL/深度基线，**不包含新增 USBL**；历史场景使用近零测量噪声；仅添加 `use_usbl:=false` 不会恢复旧噪声配置。声学融合结果与说明见第 8 节。
+本节数据保留自 IMU/DVL/深度基线，**不包含新增 USBL**；历史场景使用近零测量噪声；仅添加 `use_usbl:=false` 不会恢复旧噪声配置。声学融合结果与说明见第 8 节。
 
 在不加载旧工作空间的情况下，已重新构建 **11 个依赖包和本项目 4 个包**；17 项 pytest 传感器回归全部通过。实际启动 Stonefish、RViz、EKF 和控制/任务节点，执行全部四个矩形航点，日志确认 `Done with all waypoints`，约 **127.2 秒**后自动返回 `start`，继续观测 12 秒并关闭控制器。验证结束后 SIGINT 退出，仿真与 ROS 节点均正常结束。
 
@@ -176,15 +207,7 @@ CSV 和任务结果使用尚未存在的新文件名，避免覆盖已有实验�
 
 IMU、EKF 和本地真值实测约 20 Hz，DVL/深度约 5 Hz，虚拟 GPS 经纬高约 0.97 Hz。实际节点订阅也确认 EKF 只接收 IMU、DVL 与深度，GPS 真值节点不订阅 EKF。此结果仅适用于当时近零噪声、无海流场景；定位误差和航点/深度跟踪误差是不同指标，不能用毫米级估计误差证明真实环境中的导航或控制精度。
 
-![USBL 接入前的基线结果图](assets/navigation-results-baseline.png)
-
-**Stonefish 实际运行界面**：一艘黄色 AUV，左侧 `Trackball center` 选择 `baseline_robot` 后相机跟随艇；滚轮调整远近。
-
-![Stonefish 单 AUV 实际运行窗口](assets/stonefish-running.png)
-
-**RViz 实际运行界面**：模型、TF、绿色估计轨迹与橙色真值轨迹。两条轨迹相距很小，因此从全航线视角看基本重合。模型显示已配置 `TF Prefix: baseline_robot`，视角中心设为矩形中点。
-
-![RViz 完整航线与独立真值轨迹](assets/rviz-navigation.png)
+原先的基线图片和旧界面截图已按本次要求从 `assets/` 删除；历史数值与原始实验数据继续保留，当前图片统一见本文顶部。
 
 本次启动日志中 Stonefish 海面着色器有两条 `Failed to link program!`，未阻止单艇模型、水下场景、传感器和完整航点任务运行；海面渲染仍有兼容性限制。本次未修改系统 Stonefish 核心库。
 
@@ -239,11 +262,11 @@ baseline_robot/
 | ROS 2 | 各程序交换数据的总线 | 节点、话题、服务、消息 |
 | Stonefish | 虚拟水池和虚拟传感器 | 算水动力、推进器、艇的真实运动和传感器测量 |
 | RViz | 数据观察窗口 | 显示模型、坐标系、估计轨迹；不负责水动力 |
-| IMU / INS | IMU 测角速度和加速度；INS 是用这些量解算姿态、速度和位置的系统 | 当前用 IMU 驱动和 EKF 做基础融合 |
+| IMU / INS | IMU 测角速度和加速度；INS 是用这些量解算姿态、速度和位置的系统 | 默认 PF 使用姿态与角速度，不积分加速度 |
 | DVL | 测艇相对海底或水体的速度 | 约束速度，减缓惯性积分漂移 |
 | 深度计 | 测水压并换算深度 | 约束垂直位置 |
 | USBL | 通过声学距离和角度提供相对位置观测 | 已知位置的固定基站提供水平绝对位置约束 |
-| robot_localization | 现成的 EKF/UKF 定位工具 | 当前 EKF 发布 `/baseline_robot/odometry/filtered` |
+| Paper PF / robot_localization | 论文结构 PF / 原 EKF 对照 | 由启动参数二选一，发布 `/baseline_robot/odometry/filtered` |
 | MVP Mission / Control | “往哪走”和“推进器怎么转” | 航点引导和闭环控制 |
 
 三个轨迹别混淆：**参考轨迹**是你想让艇经过的航点；**真值轨迹**是从 Stonefish 实际位置生成的无噪声虚拟 GPS 参考；**估计轨迹**是滤波器仅凭传感器推算的位置。评估定位应比较估计与真值，而不是只比较估计与航点。
@@ -254,13 +277,13 @@ flowchart LR
   M --> C[MVP Control]
   C --> S[Stonefish 单艇]
   S --> I[IMU / DVL / 深度]
-  I --> E[EKF]
+  I --> E[默认 PF / 可选 EKF]
   E --> C
   E --> P[Path 与 CSV]
   S --> T[真实位置转虚拟 GPS 真值]
   P --> R[RViz]
   T --> R
-  U[固定站 USBL + 艇上应答器] --> A[双程距离和角度转 ENU x/y]
+  U[固定站 USBL + 艇上应答器] --> A[原始距离 / 站端方位]
   A --> E
 ```
 
@@ -276,6 +299,9 @@ flowchart LR
 | `baseline_robot_bringup/config/baseline_robot/bhv_params.yaml` | 航点和速度 |
 | `baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml` | start / survey 等任务状态 |
 | `baseline_robot_bringup/config/baseline_robot/localization.yaml` | EKF 使用哪些传感器 |
+| `baseline_robot_bringup/config/baseline_robot/particle_filter.yaml` | 默认 PF 的粒子数、噪声、超时和回放配置 |
+| `baseline_robot_bringup/scripts/particle_filter_core.py` | 论文 PF 的运动学、声学评分、重采样和可复现回放 |
+| `baseline_robot_bringup/scripts/particle_filter_node.py` | ROS 传感器、固定站模型、里程计、TF、粒子云和诊断 |
 | `baseline_robot_bringup/scripts/usbl_adapter.py` | 固定站声学测量转 ENU 艇位，传播协方差并补偿延迟 |
 | `baseline_robot_bringup/config/baseline_robot/usbl.yaml` | 已知基站位姿、声速、量程、噪声与分辨率 |
 | `baseline_robot_bringup/config/baseline_robot/sim_params.yaml` | 传感器驱动和推进器话题 |
@@ -354,7 +380,8 @@ ros2 launch baseline_robot_bringup bringup_simulation.launch.py
 | 启动参数 | 默认值 | 含义 |
 |---|---|---|
 | `rviz` | `true` | 是否打开 RViz |
-| `use_usbl` | `true` | 是否启动声学适配并将 USBL x/y 融合到 EKF |
+| `localization_filter` | `pf` | `pf` 论文结构粒子滤波／`ekf` 原 EKF 对照 |
+| `use_usbl` | `true` | PF 融合原始声学距离/方位；EKF 融合适配后的 x/y |
 | `record_path` | `true` | 是否发布轨迹并写入 CSV |
 | `csv_path` | 空字符串 | 自动生成带时间戳的 CSV；也可指定尚不存在的文件 |
 
@@ -449,9 +476,9 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 
 | 话题 | 消息类型 | 用途 |
 |---|---|---|
-| `/baseline_robot/imu/data` | `sensor_msgs/msg/Imu` | EKF 的姿态、角速度、加速度输入 |
-| `/baseline_robot/dvl/twist` | `geometry_msgs/msg/TwistWithCovarianceStamped` | EKF 速度输入 |
-| `/baseline_robot/depth` | `nav_msgs/msg/Odometry` | EKF 垂直位置输入 |
+| `/baseline_robot/imu/data` | `sensor_msgs/msg/Imu` | PF 姿态与角速度；EKF 还使用加速度 |
+| `/baseline_robot/dvl/twist` | `geometry_msgs/msg/TwistWithCovarianceStamped` | 传感器原点速度，所选滤波器补偿一次杆臂 |
+| `/baseline_robot/depth` | `nav_msgs/msg/Odometry` | PF 独立深度通道／EKF 垂直位置输入 |
 | `/baseline_robot/stonefish/usbl/beacon_info` | `stonefish_ros2/msg/BeaconInfo` | 固定站原始距离、角度和相对位置 |
 | `/baseline_robot/usbl/odometry` | `nav_msgs/msg/Odometry` | ENU 艇位，EKF 仅使用 x/y |
 | `/baseline_robot/odometry/filtered` | `nav_msgs/msg/Odometry` | 融合估计输出 |
@@ -462,9 +489,20 @@ ros2 service call /baseline_robot/controller/set std_srvs/srv/SetBool "{data: fa
 | `/baseline_robot/navigation/path` | `nav_msgs/msg/Path` | 绿色融合轨迹 |
 | `/baseline_robot/navigation/truth_path` | `nav_msgs/msg/Path` | 橙色虚拟 GPS 真值轨迹 |
 | `/baseline_robot/navigation/usbl_path` | `nav_msgs/msg/Path` | 紫色 USBL 位置观测轨迹，约 1 Hz |
+| `/baseline_robot/navigation/particles` | `geometry_msgs/msg/PoseArray` | PF 水平位置和航向粒子抽样，默认 2 Hz |
+| `/baseline_robot/navigation/pf_diagnostics` | `diagnostic_msgs/msg/DiagnosticArray` | PF ESS、输入年龄、回放与耗时 |
 
 
-当前链路：
+默认 PF 链路（详细状态与统计约定见 [PF 导航说明](docs/particle_filter_navigation.md)）：
+
+```text
+IMU 姿态/角速度 + DVL 速度 → PF [x,y,yaw]
+固定站 BeaconInfo 距离/站端方位 → PF 声学评分与重采样
+pressure → sensor_adapter → 独立深度 z
+PF + 独立深度/roll/pitch/速度通道 → odometry/filtered → 控制/TF/轨迹
+```
+
+使用 `localization_filter:=ekf` 时的原链路：
 
 ```text
 imu/stonefish/data → imu_driver → imu/data ──┐
@@ -479,7 +517,7 @@ pressure + imu/data → sensor_adapter → depth ─┤→ EKF → odometry/filt
 
 `localization.yaml` 中：`imu0` 使用姿态、角速度和加速度；`twist0` 使用 DVL 三轴速度；`odom0` 使用深度 z；`odom1` 使用 USBL x/y（`use_usbl:=false` 时移除）。GPS 不进入 EKF。GPS 也不参与 world/odom 初始化。
 
-EKF 每次先预测状态和不确定度，再用到达的传感器观测修正。最终 `/baseline_robot/odometry/filtered` 连续消息就是估计轨迹；无需额外再对该位置积分。新增 Path 节点只把估计结果连成线并保存，不另算滤波。
+EKF 模式先预测状态和不确定度，再用到达的传感器观测修正。默认 PF 模式按论文结构执行粒子传播与声学评分。两者输出的 `/baseline_robot/odometry/filtered` 都是估计轨迹；无需额外对该位置积分。Path 节点只把估计结果连成线并保存，不另算滤波。
 
 学习配置时记住 15 个布尔值的顺序：
 
@@ -534,7 +572,7 @@ ros2 run baseline_robot_bringup evaluate_uncertainty.py /tmp/baseline_trial_01.c
 
 ## 8. 双程 USBL 已接入 EKF
 
-最新全传感器高斯噪声航线、图片和验收指标见本文顶部及 [results/2026-10-22-gaussian](results/2026-10-22-gaussian/trajectory.csv)。此前的 [首次声学融合验证](results/2026-10-22-usbl/metrics.json) 和 [旧声学轨迹实验](results/2026-10-22-usbl-visual/trajectory.csv) 保留为历史参考。
+最新全传感器高斯噪声航线、图片和验收指标见本文顶部及 [results/2026-10-22-refresh-211112](results/2026-10-22-refresh-211112/trajectory.csv)。此前的 [首次声学融合验证](results/2026-10-22-usbl/metrics.json) 和 [旧声学轨迹实验](results/2026-10-22-usbl-visual/trajectory.csv) 保留为历史参考。
 
 固定站是世界坐标系中的独立声学设备，不增加第二艘艇。`single_auv.scn` 中 USBL 的 ID 为 1，NED 位置 `(-10,-5,1) m`、姿态为零；对应 ENU 位置 `(-5,-10,-1) m`。艇上 ID 为 2 的应答器与 Base 原点重合。双方配置 360° 视场、1000 m 量程，关闭遮挡检查，固定站约 1 Hz 自动 ping。Stonefish 原生实现发送 PING、接收 ACK，并用往返传播距离的一半计算斜距；无需添加不存在的 `two_way` XML 属性。
 

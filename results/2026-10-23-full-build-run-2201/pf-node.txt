@@ -1,0 +1,29 @@
+/baseline_robot/pf_filter_node
+  Subscribers:
+    /baseline_robot/depth: nav_msgs/msg/Odometry
+    /baseline_robot/dvl/twist: geometry_msgs/msg/TwistWithCovarianceStamped
+    /baseline_robot/imu/data: sensor_msgs/msg/Imu
+    /baseline_robot/stonefish/usbl/beacon_info: stonefish_ros2/msg/BeaconInfo
+    /tf: tf2_msgs/msg/TFMessage
+    /tf_static: tf2_msgs/msg/TFMessage
+  Publishers:
+    /baseline_robot/navigation/particles: geometry_msgs/msg/PoseArray
+    /baseline_robot/navigation/pf_diagnostics: diagnostic_msgs/msg/DiagnosticArray
+    /baseline_robot/odometry/filtered: nav_msgs/msg/Odometry
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /tf: tf2_msgs/msg/TFMessage
+  Service Servers:
+    /baseline_robot/pf_filter_node/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /baseline_robot/pf_filter_node/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /baseline_robot/pf_filter_node/get_parameters: rcl_interfaces/srv/GetParameters
+    /baseline_robot/pf_filter_node/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /baseline_robot/pf_filter_node/list_parameters: rcl_interfaces/srv/ListParameters
+    /baseline_robot/pf_filter_node/set_parameters: rcl_interfaces/srv/SetParameters
+    /baseline_robot/pf_filter_node/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+

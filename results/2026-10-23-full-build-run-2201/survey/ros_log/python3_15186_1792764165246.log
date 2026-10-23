@@ -1,0 +1,2 @@
+[INFO] [1792764165.325102559] [baseline_robot.pf_filter_node]: Paper PF [x,y,yaw]; depth/roll/pitch/DVL are separate channels; fixed-station acoustic updates=True
+[WARN] [1792764187.239912137] [baseline_robot.pf_filter_node]: PF rejected: waiting for matching IMU

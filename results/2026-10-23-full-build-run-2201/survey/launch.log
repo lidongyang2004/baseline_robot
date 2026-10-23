@@ -1,0 +1,212 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/ros_log/2026-10-23-22-02-44-673228-ubuntu-external-15159
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [stonefish_simulator-1]: process started with pid [15181]
+[INFO] [imu_driver_node-2]: process started with pid [15182]
+[INFO] [thruster_driver_node-3]: process started with pid [15183]
+[INFO] [sensor_adapter.py-4]: process started with pid [15184]
+[INFO] [usbl_driver_node-5]: process started with pid [15185]
+[INFO] [particle_filter_node.py-6]: process started with pid [15186]
+[INFO] [usbl_adapter.py-7]: process started with pid [15187]
+[INFO] [static_transform_publisher-8]: process started with pid [15188]
+[INFO] [gps_truth.py-9]: process started with pid [15189]
+[INFO] [robot_state_publisher-10]: process started with pid [15190]
+[INFO] [static_transform_publisher-11]: process started with pid [15191]
+[INFO] [static_transform_publisher-12]: process started with pid [15192]
+[INFO] [navigation_path.py-13]: process started with pid [15193]
+[static_transform_publisher-12] [INFO] [1792764164.896538953] [stonefish_world_ned]: Spinning until stopped - publishing transform
+[static_transform_publisher-12] translation: ('0.000000', '0.000000', '0.000000')
+[static_transform_publisher-12] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-12] from 'baseline_robot/world_ned' to 'world_ned'
+[robot_state_publisher-10] [INFO] [1792764164.898083485] [baseline_robot.robot_state_publisher]: Robot initialized
+[static_transform_publisher-8] [INFO] [1792764164.904247517] [baseline_robot_world_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-8] translation: ('0.000000', '0.000000', '0.000000')
+[static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-8] from 'baseline_robot/world' to 'baseline_robot/odom'
+[static_transform_publisher-11] [INFO] [1792764164.904247514] [baseline_robot_world_ned]: Spinning until stopped - publishing transform
+[static_transform_publisher-11] translation: ('0.000000', '0.000000', '0.000000')
+[static_transform_publisher-11] rotation: ('0.707107', '0.707107', '0.000000', '0.000000')
+[static_transform_publisher-11] from 'baseline_robot/world' to 'baseline_robot/world_ned'
+[usbl_adapter.py-7] [INFO] [1792764165.250476572] [baseline_robot.usbl_adapter]: Two-way USBL -> ENU Base position; EKF uses x/y only
+[navigation_path.py-13] [INFO] [1792764165.261488991] [baseline_robot.navigation_path]: Sensor values/covariances JSONL: /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory-sensors.jsonl
+[navigation_path.py-13] [INFO] [1792764165.264131225] [baseline_robot.navigation_path]: Trajectory CSV: /home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/trajectory.csv
+[gps_truth.py-9] [INFO] [1792764165.313990000] [baseline_robot.gps_truth]: Virtual GPS truth only: /baseline_robot/gps/ground_truth/fix; NOT fused
+[particle_filter_node.py-6] [INFO] [1792764165.325102559] [baseline_robot.pf_filter_node]: Paper PF [x,y,yaw]; depth/roll/pitch/DVL are separate channels; fixed-station acoustic updates=True
+[stonefish_simulator-1] [INFO] Welcome to Stonefish 1.6.
+[stonefish_simulator-1] [INFO] Window created. OpenGL 4.6 contexts created.
+[stonefish_simulator-1] [INFO] Checking GPU capabilities...
+[stonefish_simulator-1] [INFO] Number of texture units available: 192
+[stonefish_simulator-1] [INFO] Maximum texture size: 16384
+[stonefish_simulator-1] [INFO] Maximum number of texture layers: 2048
+[stonefish_simulator-1] [INFO] Maximum number of fragment shader uniforms: 16384
+[stonefish_simulator-1] [INFO] Setting up OpenGL...
+[stonefish_simulator-1] [INFO] Loaded texture from: /usr/local/share/Stonefish/shaders/logo_64.png
+[stonefish_simulator-1] [INFO] Initializing rendering pipeline:
+[stonefish_simulator-1] [INFO] Loading GUI...
+[stonefish_simulator-1] [INFO] Loaded texture from: /usr/local/share/Stonefish/shaders/logo_gray_64.png
+[stonefish_simulator-1] [INFO] Loaded texture from: /usr/local/share/Stonefish/shaders/gui.png
+[stonefish_simulator-1] [INFO] Initialising OpenGL rendering pipeline...
+[stonefish_simulator-1] [INFO] Loading shaders...
+[stonefish_simulator-1] [INFO] Loaded texture from: /usr/local/share/Stonefish/shaders/flake.png
+[stonefish_simulator-1] [INFO] Initializing simulation:
+[stonefish_simulator-1] [INFO] Building scenario...
+[stonefish_simulator-1] [INFO] Loaded precomputed atmosphere model (20 wavelengths, 5 scattering orders)
+[stonefish_simulator-1] [INFO] Scenario parser: Loading scenario from '/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/scenarios/single_auv.scn'.
+[stonefish_simulator-1] [INFO] Scenario parser: Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/materials.scn'
+[stonefish_simulator-1] [INFO] Scenario parser: Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/metadata/looks.scn'
+[stonefish_simulator-1] [INFO] Scenario parser: Including file '/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_bringup/share/baseline_robot_bringup/scenarios/baseline_robot.scn'
+[stonefish_simulator-1] [INFO] Generating ocean waves...
+[stonefish_simulator-1] [ERROR] Failed to link program!
+[stonefish_simulator-1] [ERROR] Failed to link program!
+[stonefish_simulator-1] [INFO] Material Foam (0) created.
+[stonefish_simulator-1] [INFO] Material Neutral (1) created.
+[stonefish_simulator-1] [INFO] Material Resin (2) created.
+[stonefish_simulator-1] [INFO] Material Rock (3) created.
+[stonefish_simulator-1] [INFO] Material Fiberglass (4) created.
+[stonefish_simulator-1] [INFO] Material Aluminium (5) created.
+[stonefish_simulator-1] [INFO] Material Vehicle (6) created.
+[stonefish_simulator-1] [INFO] Material Ice (7) created.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/body/hull_mk2_visual.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 26534 faces in 5 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/body/hull_mk2_reduced.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 500 faces in 0 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/others/mast.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 3898 faces in 1 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/others/mast.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 3898 faces in 0 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/duct.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 23436 faces in 3 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/duct.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 23436 faces in 2 ms.
+[stonefish_simulator-1] [INFO] Built multibody link baseline_robot/Vehicle (mass[kg]: 27.116; inertia[kgm2]: 0.643, 65.580, 65.973; volume[cm3]: 27085.5)
+[stonefish_simulator-1] [INFO] Building kinematic tree of robot 'baseline_robot', consisting of 2 links and 1 joints.
+[stonefish_simulator-1] [INFO] Joint 1: baseline_robot/Vehicle<-->baseline_robot/Base
+[stonefish_simulator-1] [INFO] Built multibody link baseline_robot/Base (mass[kg]: 0.002; inertia[kgm2]: 0.000, 0.000, 0.000; volume[cm3]: 2.0)
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/prop.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 372 faces in 0 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/prop.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 372 faces in 0 ms.
+[sensor_adapter.py-4] [WARN] [1792764169.699562650] [baseline_robot.sensor_adapter]: Skipping invalid pressure measurement
+[INFO] [stdbuf-14]: process started with pid [15644]
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/prop.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 372 faces in 0 ms.
+[stonefish_simulator-1] [INFO] Loading geometry from: /home/ubuntu2404_ros2/桌面/baseline_robot/.deps/install/world_of_stonefish/share/world_of_stonefish/data//parts/thruster/prop.obj
+[stonefish_simulator-1] [INFO] Loaded mesh with 372 faces in 0 ms.
+[stonefish_simulator-1] [INFO] Scenario parser: Log saved to file '/home/ubuntu2404_ros2/桌面/baseline_robot/results/2026-10-23-full-build-run-2201/survey/ros_log/stonefish_ros2_parser.log'.
+[stonefish_simulator-1] [INFO] Finalizing OpenGL rendering pipeline...
+[stonefish_simulator-1] [INFO] Synchronizing motion states...
+[stonefish_simulator-1] [INFO] Simulation initialized -> using Bullet Physics 3.26.
+[stonefish_simulator-1] [INFO] Ready for running...
+[stonefish_simulator-1] [INFO] Multithreading physics using 14 threads.
+[stonefish_simulator-1] [INFO] IC problem solved with 1 iterations in 0.002324 s.
+[stdbuf-14] ####Thruster: surge, topic name: control/thruster/surge
+[stdbuf-14] ####Thruster: surge, force_topic name: control/force/surge
+[stdbuf-14] ####Thruster: sway_bow, topic name: control/thruster/sway_bow
+[stdbuf-14] ####Thruster: sway_bow, force_topic name: control/force/sway_bow
+[stdbuf-14] ####Thruster: heave_stern, topic name: control/thruster/heave_stern
+[stdbuf-14] ####Thruster: heave_stern, force_topic name: control/force/heave_stern
+[stdbuf-14] ####Thruster: heave_bow, topic name: control/thruster/heave_bow
+[stdbuf-14] ####Thruster: heave_bow, force_topic name: control/force/heave_bow
+[stdbuf-14] [INFO] [1792764169.908185682] [baseline_robot.mvp_control_ros_node]: Controller mode changed to idle
+[stdbuf-14] [INFO] [1792764169.908314714] [baseline_robot.mvp_control_ros_node]: #### Control config file /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_control_config/baseline_robot/config.yaml loaded ####
+[stdbuf-14] [INFO] [1792764169.908324802] [baseline_robot.mvp_control_ros_node]: #### Thruster initialized ####
+[stdbuf-14] [INFO] [1792764169.908333431] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[stdbuf-14] [WARN] [1792764169.919420360] [baseline_robot.mvp_control_ros_node]: Can't find TF between world and cg: "baseline_robot/world_ned" passed to lookupTransform argument target_frame does not exist. 
+[stdbuf-14] [INFO] [1792764170.919600529] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[stdbuf-14] [WARN] [1792764170.929938807] [baseline_robot.mvp_control_ros_node]: Can't find TF between world and cg: "baseline_robot/cg_link" passed to lookupTransform argument source_frame does not exist. 
+[stdbuf-14] [INFO] [1792764171.930186691] [baseline_robot.mvp_control_ros_node]: MVP_control_node initial TF checking
+[stdbuf-14] [INFO] [1792764171.930387563] [baseline_robot.mvp_control_ros_node]: initial world_link to child_link found
+[stdbuf-14] [INFO] [1792764171.930425030] [baseline_robot.mvp_control_ros_node]: checking regular thrusters
+[stdbuf-14] [INFO] [1792764171.930551849] [baseline_robot.mvp_control_ros_node]: checking vector thrusters
+[stdbuf-14] [INFO] [1792764171.930607941] [baseline_robot.mvp_control_ros_node]: #### TF checking done ####
+[stdbuf-14] [WARN] [1792764171.930962131] [baseline_robot.mvp_control_ros_node]: !!! No vector thruster specified !!!
+[stdbuf-14] [INFO] [1792764171.931030272] [baseline_robot.mvp_control_ros_node]: #### Allocation matrix generated ####
+[stdbuf-14] setting restoring matrix
+[stdbuf-14] setting restoring matrix
+[stdbuf-14] #########regular thruster allocation generated ##############
+[stdbuf-14] #########vector thruster allocation generated ##############
+[stdbuf-14] passing control allocation values
+[stdbuf-14] allocation matrix initialized
+[stdbuf-14] #### MVP Control initialized #####
+[INFO] [mvp_helm-15]: process started with pid [15733]
+[mvp_helm-15] [INFO] [1792764174.909241766] [baseline_robot.mvp_helm]: helm constructor
+[mvp_helm-15] [INFO] [1792764174.910123242] [helm_parser]: Parsing Finite State Machines configuration from file:/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml
+[mvp_helm-15] [WARN] [1792764174.910529862] [helm_parser]: [max_duration] is not defined for state:[start], use [inf] for now
+[mvp_helm-15] [WARN] [1792764174.910543841] [helm_parser]: [exit_state] is not defined for state:[start], use [start] for now
+[mvp_helm-15] [WARN] [1792764174.910562515] [helm_parser]: [max_duration] is not defined for state:[kill], use [inf] for now
+[mvp_helm-15] [WARN] [1792764174.910566803] [helm_parser]: [exit_state] is not defined for state:[kill], use [start] for now
+[mvp_helm-15] [WARN] [1792764174.910577928] [helm_parser]: [max_duration] is not defined for state:[teleop], use [inf] for now
+[mvp_helm-15] [WARN] [1792764174.910583828] [helm_parser]: [exit_state] is not defined for state:[teleop], use [start] for now
+[mvp_helm-15] [WARN] [1792764174.910600590] [helm_parser]: [max_duration] is not defined for state:[direct_control], use [inf] for now
+[mvp_helm-15] [WARN] [1792764174.910604565] [helm_parser]: [exit_state] is not defined for state:[direct_control], use [start] for now
+[mvp_helm-15] [WARN] [1792764174.910616873] [helm_parser]: [max_duration] is not defined for state:[survey], use [inf] for now
+[mvp_helm-15] [WARN] [1792764174.910620521] [helm_parser]: [exit_state] is not defined for state:[survey], use [start] for now
+[mvp_helm-15] [INFO] [1792764174.910623148] [helm_parser]: Parsing FSM success
+[mvp_helm-15] [INFO] [1792764174.910791410] [helm_parser]: Parsing behavior configuration from file /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml
+[mvp_helm-15] [INFO] [1792764174.910816995] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_teleop
+[mvp_helm-15] [INFO] [1792764174.913054574] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_direct_control
+[mvp_helm-15] [INFO] [1792764174.913557675] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_path_following
+[mvp_helm-15] [INFO] [1792764174.913990343] [helm_parser]: Parsing behavior success
+[mvp_helm-15] behavior container plugin name: helm/Teleoperation
+[mvp_helm-15] A message from the teleoperation
+[mvp_helm-15] behavior container plugin name: helm/DirectControl
+[mvp_helm-15] A message from the DirectControl
+[mvp_helm-15] behavior container plugin name: helm/PathFollowing
+[mvp_helm-15] A message from the path_following
+[mvp_helm-15] [WARN] [1792764176.477823463] [rclcpp]: A zero depth with KEEP_LAST doesn't make sense; no data could be stored. This will be interpreted as SYSTEM_DEFAULT
+[mvp_helm-15] ###Waypoint loaded properly, baseline_robot/world_ned 
+[mvp_helm-15] ####### path following initialization
+[stdbuf-14] [INFO] [1792764182.966130174] [baseline_robot.mvp_control_ros_node]: Controller enabled.
+[mvp_helm-15] [INFO] [1792764182.967556970] [baseline_robot.mvp_helm]: state changed to: [survey]
+[mvp_helm-15] path following behavior is activated!
+[stdbuf-14] [INFO] [1792764182.985320529] [baseline_robot.mvp_control_ros_node]: Controller mode changed to 4dof
+[particle_filter_node.py-6] [WARN] [1792764187.239912137] [baseline_robot.pf_filter_node]: PF rejected: waiting for matching IMU
+[mvp_helm-15] [INFO] [1792764212.844414233] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[mvp_helm-15] [INFO] [1792764245.244530587] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[mvp_helm-15] [INFO] [1792764277.544495827] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[mvp_helm-15] [INFO] [1792764309.794545752] [baseline_robot.mvp_helm]: Done with all waypoints
+[mvp_helm-15] [INFO] [1792764309.794617155] [baseline_robot.mvp_helm]: state changed to: [start]
+[mvp_helm-15] [INFO] [1792764309.794660373] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[mvp_helm-15] path following behavior is disabled!
+[stdbuf-14] [INFO] [1792764321.883888140] [baseline_robot.mvp_control_ros_node]: Controller disabled.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [mvp_helm-15]: sending signal 'SIGINT' to process[mvp_helm-15]
+[INFO] [stdbuf-14]: sending signal 'SIGINT' to process[stdbuf-14]
+[INFO] [navigation_path.py-13]: sending signal 'SIGINT' to process[navigation_path.py-13]
+[INFO] [static_transform_publisher-12]: sending signal 'SIGINT' to process[static_transform_publisher-12]
+[INFO] [static_transform_publisher-11]: sending signal 'SIGINT' to process[static_transform_publisher-11]
+[INFO] [robot_state_publisher-10]: sending signal 'SIGINT' to process[robot_state_publisher-10]
+[INFO] [gps_truth.py-9]: sending signal 'SIGINT' to process[gps_truth.py-9]
+[INFO] [static_transform_publisher-8]: sending signal 'SIGINT' to process[static_transform_publisher-8]
+[INFO] [usbl_adapter.py-7]: sending signal 'SIGINT' to process[usbl_adapter.py-7]
+[INFO] [particle_filter_node.py-6]: sending signal 'SIGINT' to process[particle_filter_node.py-6]
+[INFO] [usbl_driver_node-5]: sending signal 'SIGINT' to process[usbl_driver_node-5]
+[INFO] [sensor_adapter.py-4]: sending signal 'SIGINT' to process[sensor_adapter.py-4]
+[INFO] [thruster_driver_node-3]: sending signal 'SIGINT' to process[thruster_driver_node-3]
+[INFO] [imu_driver_node-2]: sending signal 'SIGINT' to process[imu_driver_node-2]
+[INFO] [stonefish_simulator-1]: sending signal 'SIGINT' to process[stonefish_simulator-1]
+[mvp_helm-15] [INFO] [1792764321.921117456] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[stdbuf-14] [INFO] [1792764321.922807801] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[static_transform_publisher-12] [INFO] [1792764321.927942568] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[static_transform_publisher-11] [INFO] [1792764321.933725537] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-10] [INFO] [1792764321.938696875] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[static_transform_publisher-8] [INFO] [1792764321.950169529] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[usbl_driver_node-5] [INFO] [1792764321.964910388] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[thruster_driver_node-3] [INFO] [1792764321.973516292] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[imu_driver_node-2] [INFO] [1792764321.977482110] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[mvp_helm-15] [INFO] [1792764321.986289189] [baseline_robot.mvp_helm]: Destroying
+[INFO] [static_transform_publisher-12]: process has finished cleanly [pid 15192]
+[INFO] [static_transform_publisher-11]: process has finished cleanly [pid 15191]
+[INFO] [robot_state_publisher-10]: process has finished cleanly [pid 15190]
+[INFO] [static_transform_publisher-8]: process has finished cleanly [pid 15188]
+[INFO] [stdbuf-14]: process has finished cleanly [pid 15644]
+[stdbuf-14]  
+[INFO] [usbl_driver_node-5]: process has finished cleanly [pid 15185]
+[INFO] [thruster_driver_node-3]: process has finished cleanly [pid 15183]
+[INFO] [imu_driver_node-2]: process has finished cleanly [pid 15182]
+[INFO] [mvp_helm-15]: process has finished cleanly [pid 15733]
+[INFO] [usbl_adapter.py-7]: process has finished cleanly [pid 15187]
+[INFO] [gps_truth.py-9]: process has finished cleanly [pid 15189]
+[INFO] [navigation_path.py-13]: process has finished cleanly [pid 15193]
+[INFO] [stonefish_simulator-1]: process has finished cleanly [pid 15181]
+[INFO] [particle_filter_node.py-6]: process has finished cleanly [pid 15186]
+[INFO] [sensor_adapter.py-4]: process has finished cleanly [pid 15184]

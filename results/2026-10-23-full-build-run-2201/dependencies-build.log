@@ -1,0 +1,25 @@
+[0.268s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ubuntu2404_ros2/桌面/baseline_robot/.deps/root/opt/ros/jazzy' in the environment variable AMENT_PREFIX_PATH doesn't contain any 'local_setup.*' files.
+Starting >>> mvp_msgs
+Starting >>> acomms_msgs
+Finished <<< acomms_msgs [0.86s]
+Starting >>> stonefish_ros2
+Finished <<< mvp_msgs [0.90s]
+Starting >>> behavior_interface
+Finished <<< behavior_interface [0.10s]
+Starting >>> mvp_localization_utilities
+Finished <<< mvp_localization_utilities [0.16s]
+Starting >>> mvp_control
+Finished <<< stonefish_ros2 [0.50s]
+Starting >>> world_of_stonefish
+Finished <<< world_of_stonefish [0.26s]
+Starting >>> bhv_direct_control
+Finished <<< bhv_direct_control [0.14s]
+Starting >>> bhv_path_following
+Finished <<< bhv_path_following [0.11s]
+Starting >>> bhv_teleoperation
+Finished <<< bhv_teleoperation [0.11s]
+Starting >>> mvp_helm
+Finished <<< mvp_control [1.03s]
+Finished <<< mvp_helm [0.21s]
+
+Summary: 11 packages finished [2.36s]

@@ -1,0 +1,5 @@
+[INFO] [1792764164.904247514] [baseline_robot_world_ned]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.707107', '0.707107', '0.000000', '0.000000')
+from 'baseline_robot/world' to 'baseline_robot/world_ned'
+[INFO] [1792764321.933725537] [rclcpp]: signal_handler(SIGINT/SIGTERM)

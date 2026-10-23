@@ -1,9 +1,0 @@
-# Fixed WGS84 datum must match <ned> in scenarios/single_auv.scn.
-# publish_period samples the geodetic fix only; local truth follows the 20 Hz input.
-# This reference never enters the EKF.
-/baseline_robot/gps_truth:
-  ros__parameters:
-    datum_latitude: 41.0
-    datum_longitude: -71.0
-    datum_altitude: 0.0
-    publish_period: 1.0

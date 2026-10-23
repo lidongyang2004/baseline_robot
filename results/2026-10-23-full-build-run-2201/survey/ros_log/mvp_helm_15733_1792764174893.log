@@ -1,0 +1,27 @@
+[INFO] [1792764174.909241766] [baseline_robot.mvp_helm]: helm constructor
+[INFO] [1792764174.910123242] [helm_parser]: Parsing Finite State Machines configuration from file:/home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml
+[WARN] [1792764174.910529862] [helm_parser]: [max_duration] is not defined for state:[start], use [inf] for now
+[WARN] [1792764174.910543841] [helm_parser]: [exit_state] is not defined for state:[start], use [start] for now
+[WARN] [1792764174.910562515] [helm_parser]: [max_duration] is not defined for state:[kill], use [inf] for now
+[WARN] [1792764174.910566803] [helm_parser]: [exit_state] is not defined for state:[kill], use [start] for now
+[WARN] [1792764174.910577928] [helm_parser]: [max_duration] is not defined for state:[teleop], use [inf] for now
+[WARN] [1792764174.910583828] [helm_parser]: [exit_state] is not defined for state:[teleop], use [start] for now
+[WARN] [1792764174.910600590] [helm_parser]: [max_duration] is not defined for state:[direct_control], use [inf] for now
+[WARN] [1792764174.910604565] [helm_parser]: [exit_state] is not defined for state:[direct_control], use [start] for now
+[WARN] [1792764174.910616873] [helm_parser]: [max_duration] is not defined for state:[survey], use [inf] for now
+[WARN] [1792764174.910620521] [helm_parser]: [exit_state] is not defined for state:[survey], use [start] for now
+[INFO] [1792764174.910623148] [helm_parser]: Parsing FSM success
+[INFO] [1792764174.910791410] [helm_parser]: Parsing behavior configuration from file /home/ubuntu2404_ros2/桌面/baseline_robot/install/baseline_robot_config/share/baseline_robot_config/mvp_mission_config/baseline_robot/helm.yaml
+[INFO] [1792764174.910816995] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_teleop
+[INFO] [1792764174.913054574] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_direct_control
+[INFO] [1792764174.913557675] [baseline_robot.mvp_helm]: generate behaviors: name=bhv_path_following
+[INFO] [1792764174.913990343] [helm_parser]: Parsing behavior success
+[WARN] [1792764176.477823463] [rclcpp]: A zero depth with KEEP_LAST doesn't make sense; no data could be stored. This will be interpreted as SYSTEM_DEFAULT
+[INFO] [1792764182.967556970] [baseline_robot.mvp_helm]: state changed to: [survey]
+[INFO] [1792764212.844414233] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[INFO] [1792764245.244530587] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[INFO] [1792764277.544495827] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[INFO] [1792764309.794545752] [baseline_robot.mvp_helm]: Done with all waypoints
+[INFO] [1792764309.794617155] [baseline_robot.mvp_helm]: state changed to: [start]
+[INFO] [1792764309.794660373] [baseline_robot.mvp_helm]: current waypoints has reached, move to the next one
+[INFO] [1792764321.921117456] [rclcpp]: signal_handler(SIGINT/SIGTERM)

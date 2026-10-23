@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Display and record EKF output, acoustic fixes and virtual GPS truth.
+"""Display and record PF/EKF output, acoustic fixes and virtual GPS truth.
 
-This node does not estimate position: robot_localization does that. CSV retains
+This node does not estimate position: the selected filter does that. CSV retains
 original frames and timestamps, including reference geodetic coordinates.
 """
 

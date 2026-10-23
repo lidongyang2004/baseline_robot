@@ -22,10 +22,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument("rviz", default_value="true", description="Open RViz"),
+        DeclareLaunchArgument("localization_filter", default_value="pf", choices=["pf", "ekf"],
+                              description="Navigation estimator (pf default, ekf reference)"),
         DeclareLaunchArgument("use_usbl", default_value="true",
-                              description="Fuse two-way USBL horizontal position"),
+                              description="Use raw USBL range/bearing for PF or converted position for EKF"),
         DeclareLaunchArgument(
-            "record_path", default_value="true", description="Publish EKF Path and CSV",
+            "record_path", default_value="true", description="Publish navigation Path and CSV",
         ),
         DeclareLaunchArgument(
             "csv_path", default_value="",
@@ -36,7 +38,8 @@ def generate_launch_description():
         ),
         include("bringup_stonefish.launch.py"),
         include("bringup_baseline_robot.launch.py",
-                launch_arguments={"use_usbl": LaunchConfiguration("use_usbl")}.items()),
+                launch_arguments={name: LaunchConfiguration(name)
+                                  for name in ("use_usbl", "localization_filter")}.items()),
         include(
             "bringup_visualization.launch.py",
             launch_arguments={"rviz": LaunchConfiguration("rviz")}.items(),

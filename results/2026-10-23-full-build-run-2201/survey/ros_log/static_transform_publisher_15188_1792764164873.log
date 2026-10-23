@@ -1,0 +1,5 @@
+[INFO] [1792764164.904247517] [baseline_robot_world_odom]: Spinning until stopped - publishing transform
+translation: ('0.000000', '0.000000', '0.000000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'baseline_robot/world' to 'baseline_robot/odom'
+[INFO] [1792764321.950169529] [rclcpp]: signal_handler(SIGINT/SIGTERM)
